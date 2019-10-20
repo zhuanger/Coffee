@@ -12,6 +12,8 @@ module.exports = {
     config.resolve.alias.set('@',resolve('src'))
                         .set('@C',resolve('src/components'))
                         .set('@A',resolve('src/assets'))
+                        .set('@R',resolve('src/routers'))
+                        .set('@S',resolve('src/store'))
   },
   devServer: {
     port: 9000
