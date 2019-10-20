@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router';
-import Vuex from 'vuex'
+
 import App from './App.vue'
 import Ajax from '@A/js/ajax.js'
 import Router from '@R/index'
@@ -8,7 +8,6 @@ import Store from '@S/index'
 
 //挂载属性
 Vue.use(VueRouter); 
-Vue.use(Vuex); 
 
 Vue.prototype.$ajax = Ajax
 
