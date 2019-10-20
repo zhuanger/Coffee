@@ -14,6 +14,7 @@ module.exports = {
                         .set('@A',resolve('src/assets'))
                         .set('@R',resolve('src/routers'))
                         .set('@S',resolve('src/store'))
+                        .set('@P',resolve('src/pages'))
   },
   devServer: {
     port: 9000

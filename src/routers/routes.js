@@ -1,4 +1,4 @@
-import Index from "@C/index"
+import Index from "@P/index/index"
 let route = [
   {path: '/index', component: Index}
 ]

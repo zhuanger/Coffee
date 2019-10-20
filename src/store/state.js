@@ -1,4 +1,4 @@
 const state = {
 
 }
-export default states
+export default state
