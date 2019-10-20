@@ -19,6 +19,15 @@ module.exports = {
   devServer: {
     port: 9000
   },
+  css: {
+    loaderOptions: {
+      sass: {
+        // 根据自己样式文件的位置调整
+        data: `@import "@/assets/scss/color.scss";`,
+        // data: `@import "@/assets/scss/common.scss";`
+      }
+    }
+  }
 }
 
 const resolve = function(dir){
