@@ -1,9 +1,16 @@
 const path = require('path')
-console.log(process.argv[process.argv.length - 1])
 module.exports = {
   publicPath: './',
   outputDir:'dist',
   assetsDir: 'static',
+  css: {
+    loaderOptions: {
+      scss: {
+        // data: `@import "@/assets/scss/color.scss";`,
+        prependData: `@import "@/assets/scss/common.scss";`
+      }
+    }
+  },
   chainWebpack: config => {
     config.module.rule('images').use('url-loader').loader('url-loader').tap((options)=>{
       Object.assign(options, {limit: 5120})
@@ -19,15 +26,7 @@ module.exports = {
   devServer: {
     port: 9000
   },
-  css: {
-    loaderOptions: {
-      sass: {
-        // 根据自己样式文件的位置调整
-        data: `@import "@/assets/scss/color.scss";`,
-        // data: `@import "@/assets/scss/common.scss";`
-      }
-    }
-  }
+  
 }
 
 const resolve = function(dir){

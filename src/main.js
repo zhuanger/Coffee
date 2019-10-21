@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 
 import App from './App.vue'
 import Ajax from '@A/js/ajax.js'
+import Iconfont from '@A/js/iconfont.js'
+Iconfont
 import Router from '@R/index'
 import Store from '@S/index'
 import ElementUI from 'element-ui';
