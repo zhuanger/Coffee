@@ -1,7 +1,6 @@
 <template>
-  <el-carousel :interval="4000" type="card" height="300px" class="swiper">
+  <el-carousel :interval="4000" type="card" height="400px" class="swiper">
     <el-carousel-item v-for="(item,index) in imageItem" :key="index">
-      <!-- <h3 class="medium">{{ item }}</h3> -->
       <img :src="item" alt="" class="swiper-img">
     </el-carousel-item>
   </el-carousel>
@@ -11,9 +10,6 @@
     props: {
       imageItem: {}
     },
-    mounted(){
-      console.log(this.imageItem)
-    }
   }
 </script>
 <style lang="scss">

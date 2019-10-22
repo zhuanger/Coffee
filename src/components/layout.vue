@@ -9,9 +9,12 @@
       </a>
     </div>
     <el-row :gutter="20" >
-      <el-col :span="6" @mouseover.native="addAndRemoveAvtive(item, 1)" @mouseleave.native="addAndRemoveAvtive(item, 2)" 
-        :class=" isActiveItem[item - 1] ? 'el-col-active' :''" v-for="item in 4" :key="item">
-        <div :class="['grid-content bg-purple', isActiveItem[item - 1] ? 'bg-purple-active' :'']"></div>
+      <el-col :span="6" @mouseover.native="addAndRemoveAvtive(index, 1)" @mouseleave.native="addAndRemoveAvtive(index, 2)" 
+        :class=" isActiveItem[index] ? 'el-col-active' :''" v-for="(item,index) in imagesItem" :key="index">
+        <div :class="['grid-content bg-purple', isActiveItem[index] ? 'bg-purple-active' :'']">
+          <img :src="item" alt="" class="el-col-img">
+          <span class="el-col-name">咖啡豆</span>
+        </div>
       </el-col>
     </el-row>
     <el-divider></el-divider>
@@ -22,7 +25,8 @@
     props: {
       title:{
         default: ''
-      }
+      },
+      imagesItem: {}
     },
     data(){
       return{
@@ -31,7 +35,7 @@
     },
     methods:{
       addAndRemoveAvtive(index, type){
-        this.$set(this.isActiveItem, index - 1, type === 1 ? true : false)
+        this.$set(this.isActiveItem, index , type === 1 ? true : false)
       },
     },
     mounted(){
@@ -61,6 +65,7 @@
       }
       &-a{
         color: #aaaaaa;
+        font-size: 14px;
       }
     }
   }
@@ -78,15 +83,24 @@
       bottom: 5px;
       transition: bottom .15s;
     }
+    &-img{
+      border-radius: 3px;
+      width: 100%;
+      min-height: 150px
+    }
+    &-name{
+      padding-left: 20px;
+      margin-top:10px;
+    }
   }
   .bg-purple-dark {
     background: #99a9bf;
   }
   .bg-purple {
-    background: #d3dce6;
+    background: #ffffff;
     box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.12);
     &-active{
-      box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 1px 3px 2px rgba(0, 0, 0, 0.12);
       transition: box-shadow .15s
     }
   }

@@ -1,11 +1,11 @@
 <template>
   <div class="index">
     <swiper class="index-swiper" :imageItem="imageItem"></swiper>
-    <layout class="index-layout" title="热销商品"></layout>
-    <layout class="index-layout" title="最新商品"></layout>
+    <layout class="index-layout" title="热销商品" :imagesItem="layoutItem"></layout>
+    <layout class="index-layout" title="最新商品" :imagesItem="layoutItem"></layout>
     <footer class="index-footer">
       <div class="index-footer-our"><a href="#">关于我们</a><el-divider direction="vertical"></el-divider><a href="#">联系我们</a></div>
-      <span class="index-footer-copyright">Copyright @2019 Me </span>
+      <span class="index-footer-copyright">Copyright @2019 Me All Rights Reserved</span>
     </footer>
   </div>
 </template>
@@ -20,7 +20,8 @@
     },
     data(){
       return{
-        imageItem: [require('../../assets/images/testImage.jpg'),require('../../assets/images/testImage.jpg'),require('../../assets/images/testImage.jpg')]
+        imageItem: [require('../../assets/images/testImage.jpg'),require('../../assets/images/testImage.jpg'),require('../../assets/images/testImage.jpg')],
+        layoutItem: [require('../../assets/images/testImage.jpg'),require('../../assets/images/testImage.jpg'),require('../../assets/images/testImage.jpg'),require('../../assets/images/testImage.jpg')]
       }
     }
   }
@@ -39,6 +40,7 @@
     &-footer{
       margin-bottom: 20px;
       text-align: center;
+      font-size: 15px;
       &-our{
         margin-bottom: 10px;
         >a{
@@ -46,6 +48,7 @@
         }
       }
       &-copyright{
+        font-size: 13px;
       }
     }
   }
