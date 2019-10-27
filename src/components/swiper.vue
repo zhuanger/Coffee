@@ -1,5 +1,5 @@
 <template>
-  <el-carousel :interval="4000" type="card" height="400px" class="swiper">
+  <el-carousel :interval="4000" :type="type" :height="height" class="swiper">
     <el-carousel-item v-for="(item,index) in imageItem" :key="index">
       <img :src="item" alt="" class="swiper-img">
     </el-carousel-item>
@@ -8,13 +8,19 @@
 <script>
   export default {
     props: {
-      imageItem: {}
+      imageItem: {},
+      type: {
+        default: ''
+      },
+      height:{
+        default: window.innerHeight + 'px'
+      }
     },
   }
 </script>
 <style lang="scss">
   .el-carousel__item h3 {
-    color: #475669;
+    color: #F7F7F7;
     font-size: 14px;
     opacity: 0.75;
     line-height: 200px;
@@ -22,11 +28,11 @@
   }
   
   .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
+    background-color: #F7F7F7;
   }
   
   .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
+    background-color: #F7F7F7;
   }
   .swiper{
     &-img{

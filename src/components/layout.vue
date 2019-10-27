@@ -8,7 +8,7 @@
         </svg>
       </a>
     </div>
-    <el-row :gutter="20" >
+    <el-row :gutter="20"  type="flex" justify="center">
       <el-col :span="6" @mouseover.native="addAndRemoveAvtive(index, 1)" @mouseleave.native="addAndRemoveAvtive(index, 2)" 
         :class=" isActiveItem[index] ? 'el-col-active' :''" v-for="(item,index) in imagesItem" :key="index">
         <div :class="['grid-content bg-purple', isActiveItem[index] ? 'bg-purple-active' :'']">
@@ -17,7 +17,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-divider></el-divider>
+    <!-- <el-divider></el-divider> -->
   </div>
 </template>
 <script>
@@ -30,7 +30,7 @@
     },
     data(){
       return{
-        isActiveItem: [false, false, false, false]
+        isActiveItem: [false, false, false]
       }
     },
     methods:{
@@ -46,7 +46,8 @@
   .layout{
     margin-bottom: 70px;
     &-top{
-      margin-bottom: 30px;      
+      margin-bottom: 30px;    
+      padding: 0 30px;  
       display: flex;
       justify-content: space-between;
       align-items: center;

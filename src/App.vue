@@ -1,31 +1,28 @@
 <template>
   <div id="app">
-    <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect" 
-      background-color="#ffffff" text-color="#172991" active-text-color="#172991">
-      <li class="el-menu-logo el-menu-item"><img src="./assets/images/logo.png" ></li>
-      <el-menu-item index="1">首页</el-menu-item>
-      <el-menu-item index="2">关于我们</el-menu-item>
-      <el-menu-item index="3">最新活动</el-menu-item>
-      <el-menu-item index="4">员工点餐系统</el-menu-item>
-      <el-menu-item index="5" class="el-menu-login">登陆</el-menu-item>
-    </el-menu>
-    <div class="line"></div>
+    <cofferHeader :isShow="isIndex"></cofferHeader>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+  import cofferHeader from '@C/header'
   export default {
     name: 'app',
     data() {
       return {
+        isIndex: this.$route.path !== '/index',
         activeIndex: '1',
         activeIndex2: '1'
       };
     },
-    methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+    
+    components: {
+      cofferHeader
+    },
+    watch: {
+      '$route'(n,o){
+        this.isIndex = n.path !== '/index'
       }
     }
   }
