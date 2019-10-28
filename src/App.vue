@@ -40,6 +40,9 @@
   .el-menu-login{
     float: right !important;
   }
+  ul,li{
+    list-style:none;
+  }
   .el-menu-logo{
     float: left;
     padding: 0 80px 0 50px !important;
