@@ -1,12 +1,5 @@
 <template>
   <div class="index index-container" >
-    <!-- <swiper class="index-swiper" :imageItem="imageItem"></swiper>
-    <layout class="index-layout" title="热销商品" :imagesItem="layoutItem"></layout>
-    <layout class="index-layout" title="最新商品" :imagesItem="layoutItem"></layout>
-    <footer class="index-footer">
-      <div class="index-footer-our"><a href="#">关于我们</a><el-divider direction="vertical"></el-divider><a href="#">联系我们</a></div>
-      <span class="index-footer-copyright">Copyright @2019 Me All Rights Reserved</span>
-    </footer> -->
     <div class="index-banner-container">
       <el-carousel :height="windowHeight" direction="vertical" :autoplay="false" class="banner" ref="carousel" indicator-position="none" :loop="false">
         <el-carousel-item>
@@ -20,6 +13,10 @@
         <el-carousel-item>
           <!-- <swiper class="index-swiper" :imageItem="imageItem"></swiper> -->
           <layout class="index-layout" title="最新商品" :imagesItem="layoutItem"></layout>
+          <footer class="index-footer">
+            <div class="index-footer-our"><a href="#">关于我们</a><el-divider direction="vertical"></el-divider><a href="#">联系我们</a></div>
+            <span class="index-footer-copyright">Copyright @2019 Me All Rights Reserved</span>
+          </footer> 
         </el-carousel-item>
       </el-carousel>
     </div>

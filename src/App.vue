@@ -11,7 +11,7 @@
     name: 'app',
     data() {
       return {
-        isIndex: this.$route.path !== '/index',
+        isIndex: this.$route.path !== '/index' && this.$route.path !== '/login',
         activeIndex: '1',
         activeIndex2: '1'
       };
@@ -22,7 +22,8 @@
     },
     watch: {
       '$route'(n,o){
-        this.isIndex = n.path !== '/index'
+        // 当首页和登陆页面时候不显示App.vue页面这个header组件
+        this.isIndex = (n.path !== '/index' && n.path !== '/login');
       }
     }
   }

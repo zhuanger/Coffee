@@ -7,3 +7,19 @@
   fill: currentColor;
   overflow: hidden;
 }
+
+.fs-15{
+  font-size: 15px;
+}
+.fs-22{
+  font-size: 22px;
+}
+
+.mgb-20{
+  margin-bottom: 20px;
+}
+
+@mixin mar-center($width) {
+  margin: 0 auto;
+  width: $width;
+}
