@@ -5,7 +5,7 @@
       <li class="el-menu-logo el-menu-item"><img src="@A/images/logo.png" ></li>
       <el-menu-item index="1" route="/index">首页</el-menu-item>
       <el-menu-item index="2" route="/about">关于我们</el-menu-item>
-      <el-menu-item index="3">最新活动</el-menu-item>
+      <el-menu-item index="3" route="/activity">最新活动</el-menu-item>
       <el-menu-item index="4">员工点餐系统</el-menu-item>
       <el-menu-item index="5" class="el-menu-login">登陆</el-menu-item>
     </el-menu>
@@ -22,24 +22,23 @@
     },
     methods: {
       handleSelect(key, keyPath){
-        console.log(key)
-        // key, keyPath
         this.activeIndex = key; 
       }
     },
     data(){
       return{
-        // activeIndex: '1',
       }
     },
     computed: {
       activeIndex: {
         get(){
-          let name = this.$route.path, _activeIndex = '1'        
-          if(name === '/about'){
-            _activeIndex = '2'
-          }
-          return _activeIndex
+          let name = this.$route.path;
+          let _activeObject = {
+            "/index": '1',
+            "/about": "2",
+            "/activity": "3"
+          }    
+          return _activeObject[name]
         },
         set(){},
       }
