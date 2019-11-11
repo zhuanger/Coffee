@@ -13,5 +13,6 @@ let route = [
   {path: '/activity', component: Activity, name: 'activity'},
   {path: '/detail', component: Detail, name: 'detail'},
   {path: '/home', component: Home, name: 'home'},
+  {path: '/order', component: Order, name: 'order'},
 ]
 export default route  
