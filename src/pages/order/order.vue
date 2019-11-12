@@ -2,7 +2,7 @@
   <div class="order">
     <div class="order-left">
       <ul class="order-left-ul">
-        <li v-for="(item, index) of liItem" :key="index" class="order-left-ul-li">
+        <li v-for="(item, index) of liItem" :key="index" @click="changeTab(index)" :class="['order-left-ul-li', index === clickActive ? 'active':'']">
           {{item.name}}
         </li>
       </ul>
@@ -35,7 +35,13 @@
   export default {
     data(){
       return{
-        liItem:[{name: '咖啡'},{name: '轻食物'}]
+        liItem:[{name: '咖啡'},{name: '轻食物'}],
+        clickActive: 0,
+      }
+    },
+    methods: {
+      changeTab(index){
+        this.clickActive = index;
       }
     }
   }
@@ -55,13 +61,17 @@
           cursor: pointer;
           line-height: 50px;
           text-align: center;
+          &.active{
+            background-color: $text-color;
+            color: #ffffff;
+          }
         }
       }      
     }
     &-right{
       float: left;
       width: 950px;
-      border: 1px solid red;
+      // border: 1px solid red;
       height: 600px;
       overflow-y: hidden;
       &-contanier{
@@ -76,6 +86,15 @@
       }
     }
     .card{
+      height: 310px;
+      width: 220px;
+      border: 1px solid gray;
+      box-shadow: 0 0px 0px 0x rgba(0, 0, 0, 0.12);
+      &:hover{
+        border: 1px solid $text-color;
+        box-shadow: 0 1px 3px 2px rgba(0, 0, 0, 0.12);
+        transition: box-shadow .15s
+      }
       &-img{
         width: 100%;
         height: 70%;
@@ -116,9 +135,6 @@
           }
         }
       }
-      height: 310px;
-      width: 220px;
-      border: 1px solid gray;
     }
   }
 </style>
