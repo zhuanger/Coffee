@@ -8,26 +8,24 @@
       </ul>
     </div>
     <div class="order-right">
-      <!-- <div class="order-right-contanier"> -->
-        <!-- <div class="order-right-contanier-box"> -->
-          <div class="card">
-            <img src="@A/images/testImage.jpg" alt="" class="card-img">
-            <div class="card-text">
-              <span class="money">￥41.5元</span>
-
-              <p class="card-text-title">面吧</p>
-              <div class="card-text-content">
-                <!-- <span class="money">￥41.5元</span> -->
-                <span class="stock">库存：999</span>
-                <i class="cart"></i>
-              </div>
-            </div>
+      <div class="card">
+        <img src="@A/images/testImage.jpg" alt="" class="card-img">
+        <div class="card-text">
+          <span class="money">￥41.5元</span>
+          <p class="card-text-title">面吧</p>
+          <div class="card-text-content">
+            <!-- <span class="money">￥41.5元</span> -->
+            <span class="stock">库存：999</span>
+            <i class="cart"></i>
           </div>
-        <!-- </div> -->
-      <!-- </div> -->
-      <div>
-
+        </div>
       </div>
+    </div>
+    <div class="order-ope">
+      <button class="order-ope-cart button">
+        <i class="num">1</i>
+      </button>
+      <button class="order-ope-top button"><i class="el-icon-arrow-up"></i></button>
     </div>
   </div>
 </template>
@@ -133,6 +131,53 @@
             margin: 7px 0px 0 0px;
 
           }
+        }
+      }
+    }
+    &-ope{
+      position: fixed;
+      right: 50px;
+      border: 1px solid #bbb;
+      height: 100px;
+      width: 55px;
+      border-radius: 3px;
+      top: 220px;
+      box-sizing: content-box;
+      .button{
+        border: 0;
+        display: block;
+        height: 48px;
+        width: 100%;
+        background-color: #ffffff;
+        outline: 0;
+      }
+      &-cart{
+        background-image: url("../../assets/images/cart.png");
+        background-size: 22px 22px;
+        background-repeat: no-repeat;
+        background-position:center;
+        border-bottom: 1px solid #bbbbbb !important;
+        position: relative;
+        .num{
+          // position: absolute;
+          // top: 5px;
+          // right: 10px;
+          // z-index: 3;   
+          color: #ffffff;
+          width: 18px;
+          height: 18px;
+          background-color: $text-color;
+          display: block;
+          border-radius: 30%;
+          line-height: 18px;
+          position: relative;
+          left: 30px;
+          bottom: 11px;
+        }
+      }
+      &-top{
+        i{
+          font-size: 22px;
         }
       }
     }
