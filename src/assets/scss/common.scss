@@ -23,3 +23,15 @@
   margin: 0 auto;
   width: $width;
 }
+
+@mixin ellipse($clamp) {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: normal !important;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $clamp;
+  margin-top: 5px;
+}

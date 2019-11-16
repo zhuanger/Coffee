@@ -8,39 +8,81 @@
       </ul>
     </div>
     <div class="order-right">
-      <div class="card">
-        <img src="@A/images/testImage.jpg" alt="" class="card-img">
-        <div class="card-text">
-          <span class="money">￥41.5元</span>
-          <p class="card-text-title">面吧</p>
-          <div class="card-text-content">
-            <!-- <span class="money">￥41.5元</span> -->
-            <span class="stock">库存：999</span>
-            <i class="cart"></i>
-          </div>
-        </div>
-      </div>
+      <good></good>
+      <good></good>
+      <good></good>
+      <good></good>
+      <good></good>
+      <good></good>
+      <good></good>
+      <good></good>
+      <good></good>
+      <good></good>
+      <good></good>
+      <good></good>
+      <good></good>
+      <good></good>
+      <good></good>
+
     </div>
     <div class="order-ope">
-      <button class="order-ope-cart button">
+      <button class="order-ope-cart button" @click="drawer = true">
         <i class="num">1</i>
       </button>
       <button class="order-ope-top button"><i class="el-icon-arrow-up"></i></button>
     </div>
+    <el-drawer title="已选商品" :visible.sync="drawer" :direction="direction" class="order-drawer">
+      <div slot="title" class="order-drawer-top">
+        <h4>已选商品</h4>
+        <div class="order-drawer-top-right">
+          <span>总共：<span class="allPrice"><strong>￥21.4</strong></span></span>
+          <el-button type="primary">去结算</el-button>
+        </div>
+      </div>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+      <cart-good></cart-good>
+    </el-drawer>
   </div>
 </template>
 <script>
+  import good from "@C/good";
+  import cartGood from "@C/cart-good";
   export default {
     data(){
       return{
         liItem:[{name: '咖啡'},{name: '轻食物'}],
         clickActive: 0,
+        drawer: false,
+        direction: 'ltr',
+        num: 1
       }
     },
     methods: {
       changeTab(index){
         this.clickActive = index;
+      },
+      handleChange(value) {
+        console.log(value);
       }
+    },
+    components: {
+      good,
+      cartGood
     }
   }
 </script>
@@ -68,71 +110,7 @@
     }
     &-right{
       float: left;
-      width: 950px;
-      // border: 1px solid red;
-      height: 600px;
-      overflow-y: hidden;
-      &-contanier{
-        width: 100%;
-        height: 500px;
-        border: 1px solid red;
-        overflow-y: hidden;
-        // &-box{
-        //   height: 100%;
-        //   width: 100%;
-        // }
-      }
-    }
-    .card{
-      height: 310px;
-      width: 220px;
-      border: 1px solid gray;
-      box-shadow: 0 0px 0px 0x rgba(0, 0, 0, 0.12);
-      &:hover{
-        border: 1px solid $text-color;
-        box-shadow: 0 1px 3px 2px rgba(0, 0, 0, 0.12);
-        transition: box-shadow .15s
-      }
-      &-img{
-        width: 100%;
-        height: 70%;
-      }
-      &-text{
-        padding: 5px 7px;
-        .money{
-          color: $text-color;
-          font-size: 18px;
-        }
-        &-title{
-          display: -webkit-box;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          word-wrap: break-word;
-          word-break: break-all;
-          white-space: normal !important;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 1;
-          margin-top: 5px;
-        }
-        &-content{
-          .cart{
-            background-image:url("../../assets/images/cart.png");
-            background-size: 20px 20px;
-            height: 20px;
-            width: 20px;
-            display: inline-block;
-            float: right;
-            margin: 7px 9px 0 0;
-          }
-          .stock{
-            color: $grey-text-color;
-            font-size: 12px;
-            float: left;
-            margin: 7px 0px 0 0px;
-
-          }
-        }
-      }
+      width: 980px;
     }
     &-ope{
       position: fixed;
@@ -158,11 +136,8 @@
         background-position:center;
         border-bottom: 1px solid #bbbbbb !important;
         position: relative;
-        .num{
-          // position: absolute;
-          // top: 5px;
-          // right: 10px;
-          // z-index: 3;   
+        cursor: pointer;
+        .num{  
           color: #ffffff;
           width: 18px;
           height: 18px;
@@ -178,8 +153,28 @@
       &-top{
         i{
           font-size: 22px;
+          cursor: pointer;
         }
       }
     }
+    &-drawer{
+      /deep/ .el-drawer__body{
+        overflow-y: scroll;
+      };
+      &-top{
+        display: flex;
+        justify-content: space-between;
+        &-right{
+          margin-right: 20px;
+          .allPrice{
+            margin-right: 20px;
+            color: red;
+            font-size: 20px;
+          }
+        }
+      }
+    }
+    
   }
+  
 </style>
