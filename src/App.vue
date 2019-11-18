@@ -53,4 +53,8 @@
       border-radius: 50%      
     }
   }
+  .el-button--primary{
+    background-color: $text-color !important;
+    border-color: $text-color !important;;
+  }
 </style>

@@ -3,25 +3,33 @@
     <el-container>
       <el-aside width="180px">
         <ul>
-          <li v-for="(item, index) of liItem" :key="index" class="home-ul-li">
+          <li v-for="(item, index) of liItem" :key="index" :class="['home-ul-li',activeIndex === index ? 'active': '']" @click="activeIndex = index">
             {{item.name}}
           </li>
         </ul>
       </el-aside>
       <el-main class="home-main">
-
+        <personal v-if="activeIndex === 0"></personal>
+        <my-order v-else-if="activeIndex === 1"></my-order>
       </el-main>
     </el-container>
   </div>
 </template>
-<script>
+<script> 
+  import personal from "./modules/personal";
+  import myOrder from "./modules/my-order";
   export default {
     name: 'home',
     data(){
       return{
         liItem:[{name: '个人中心', isActive: true}, {name: '我的订单', isActive: false}, 
-                {name: '管理成员' ,isActive: false},{name: '管理商品', isActive: false}]
+                {name: '管理成员' ,isActive: false},{name: '管理商品', isActive: false}],
+        activeIndex: 0
       }
+    },
+    components: {
+      personal,
+      myOrder
     }
   }
 </script>
@@ -37,6 +45,9 @@
         padding: 15px 0;
         border: 1px solid #eeeeee;
         cursor: pointer;
+        &.active{
+          background-color: $bg-color;
+        }
       }
     }
     &-main{
