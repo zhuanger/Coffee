@@ -1,16 +1,14 @@
 <template>
-  <section class="myOrder">
-    <!-- 时间 商品名字数量 价格 状态 图片 -->
-    <div class="">
-      <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="date" label="日期" width="120"></el-table-column>
-        <el-table-column prop="name" label="图片" width="140"></el-table-column>
-        <el-table-column prop="address" label="状态" width="80"></el-table-column>
-        <el-table-column prop="address" label="商品名字"></el-table-column>
-        <el-table-column prop="address" label="总价格" width="100"></el-table-column>
-      </el-table>
-      <el-pagination background layout="prev, pager, next" :total="1000" class="myOrder-pagination"></el-pagination>
-    </div>
+  <section class="manage">
+    <!-- 用户名/ 角色/ 设置权限 -->
+    <el-table :data="tableData" stripe style="width: 100%">
+      <el-table-column prop="date" label="用户名" width="120"></el-table-column>
+      <el-table-column prop="name" label="角色" width="140"></el-table-column>
+      <el-table-column prop="address" label="操作" >
+        <el-button type="primary">权限设置</el-button>
+        <el-button type="danger">删除</el-button>
+      </el-table-column>
+    </el-table>
   </section>
 </template>
 <script>
@@ -51,12 +49,6 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-  .myOrder{
-    &-pagination{
-      margin-top: 10px;
-      display: flex;
-      justify-content: center;
-    }
-  }
+<style lang="scss">
+
 </style>

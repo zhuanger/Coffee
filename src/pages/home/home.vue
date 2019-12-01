@@ -11,6 +11,7 @@
       <el-main class="home-main">
         <personal v-if="activeIndex === 0"></personal>
         <my-order v-else-if="activeIndex === 1"></my-order>
+        <manage v-else-if="activeIndex === 2"></manage>
       </el-main>
     </el-container>
   </div>
@@ -18,6 +19,7 @@
 <script> 
   import personal from "./modules/personal";
   import myOrder from "./modules/my-order";
+  import manage from "./modules/manage-member";
   export default {
     name: 'home',
     data(){
@@ -29,7 +31,8 @@
     },
     components: {
       personal,
-      myOrder
+      myOrder,
+      manage
     }
   }
 </script>
