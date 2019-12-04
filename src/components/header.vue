@@ -7,7 +7,7 @@
       <el-menu-item index="2" route="/about">关于我们</el-menu-item>
       <el-menu-item index="3" route="/activity">最新活动</el-menu-item>
       <el-menu-item index="4" route="/order">员工点餐系统</el-menu-item>
-      <el-input  class="header-search" placeholder="请输入搜索内容" prefix-icon="el-icon-search" v-model="search"></el-input>
+      <el-input  class="header-search" placeholder="请输入搜索内容" prefix-icon="el-icon-search" v-model="search" ></el-input>
       
       <el-menu-item index="5" class="el-menu-login" :route="hasLogin ? '/home' : '/login'">登陆</el-menu-item>
     </el-menu>

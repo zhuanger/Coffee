@@ -5,6 +5,7 @@ import Activity from "@P/activity/activity"
 import Login from "@P/login/login"
 import Order from "@P/order/order"
 import Home from "@P/home/home"
+import Search from "@P/search/search"
 let route = [
   {path: '/', redirect: '/index', name: 'index'},
   {path: '/index', component: Index},
@@ -14,5 +15,6 @@ let route = [
   {path: '/detail', component: Detail, name: 'detail'},
   {path: '/home', component: Home, name: 'home'},
   {path: '/order', component: Order, name: 'order'},
+  {path: '/search', component: Search, name: 'search'},
 ]
 export default route  
