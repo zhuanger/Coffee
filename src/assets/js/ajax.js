@@ -1,9 +1,10 @@
 import Axios from "axios"
 const ajax = Axios.create({
   timeout: 10000,
-  baseURL: 'localhost',
+  baseURL: 'http://127.0.0.1:3000',
   transformRequest: [function (data) {
-    data = JSON.stringify(data)
+    console.log('data', data);
+    data = JSON.stringify(data) || {}
     return data
   }],
   headers: {
@@ -20,6 +21,7 @@ const ajax = Axios.create({
 })
 // 添加请求拦截器
 Axios.interceptors.request.use((config)=>{
+  console.log('config', config);
   return config
 }, (error) => {
   return Promise.reject(error);
@@ -29,7 +31,7 @@ Axios.interceptors.request.use((config)=>{
 Axios.interceptors.response.use((response)=> {
   return response;
 }, (error)=>{
-  return Promise.reject(error);
+  return Promise.reject(error); 
 });
 
 export default ajax
