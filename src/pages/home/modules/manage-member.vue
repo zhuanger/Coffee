@@ -71,7 +71,10 @@ export default {
   methods: {
     submit(){
       console.log(this.$ajax.post);
-      this.$ajax.post('/orders',{user: 1}).then((res)=>{
+      var params = new URLSearchParams();
+      params.append('username', 'jom');
+      params.append('password', '6666');
+      this.$ajax.post('/register',params).then((res)=>{
         console.log('res', res);
       }).catch((e)=>{
 

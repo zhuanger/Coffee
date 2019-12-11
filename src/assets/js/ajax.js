@@ -2,19 +2,12 @@ import Axios from "axios"
 const ajax = Axios.create({
   timeout: 10000,
   baseURL: 'http://127.0.0.1:3000',
-  transformRequest: [function (data) {
-    console.log('data', data);
-    data = JSON.stringify(data) || {}
-    return data
-  }],
-  headers: {
-    get: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-    },
-    post: {
-      // 'Content-Type': 'application/json;charset=utf-8'
-    }
-  },
+  // transformRequest: [function (data) {
+  //   console.log('data', data);
+  //   // data = JSON.stringify(data) || {}
+  //   return data
+  // }],
+  headers: {'Content-Type':'application/x-www-form-urlencoded'},
   validateStatus: (status)=>{
     return status >= 200 && status < 300; 
   }
