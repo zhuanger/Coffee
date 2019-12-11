@@ -71,7 +71,7 @@ export default {
   methods: {
     submit(){
       console.log(this.$ajax.post);
-      this.$ajax.post('/orders',{}).then((res)=>{
+      this.$ajax.post('/orders',{user: 1}).then((res)=>{
         console.log('res', res);
       }).catch((e)=>{
 

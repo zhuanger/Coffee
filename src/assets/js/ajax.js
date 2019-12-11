@@ -12,7 +12,7 @@ const ajax = Axios.create({
       'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
     },
     post: {
-      'Content-Type': 'application/json;charset=utf-8'
+      // 'Content-Type': 'application/json;charset=utf-8'
     }
   },
   validateStatus: (status)=>{
