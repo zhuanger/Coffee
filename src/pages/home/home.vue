@@ -9,7 +9,7 @@
         </ul>
       </el-aside>
       <el-main class="home-main">
-        <personal v-if="activeIndex === 0"></personal>
+        <personal v-if="activeIndex === 0" :userInfo="userInfo"></personal>
         <my-order v-else-if="activeIndex === 1"></my-order>
         <manage-member v-else-if="activeIndex === 2"></manage-member>
         <manage-goods v-else-if="activeIndex === 3"></manage-goods>
@@ -28,7 +28,8 @@
       return{
         liItem:[{name: '个人中心', isActive: true}, {name: '我的订单', isActive: false}, 
                 {name: '管理成员' ,isActive: false},{name: '管理商品', isActive: false}],
-        activeIndex: 0
+        activeIndex: 0,
+        userInfo: {}
       }
     },
     components: {
@@ -36,6 +37,9 @@
       myOrder,
       manageMember,
       manageGoods
+    },
+    created(){
+      
     }
   }
 </script>

@@ -70,11 +70,14 @@ export default {
   },
   methods: {
     submit(){
-      console.log(this.$ajax.post);
-      var params = new URLSearchParams();
-      params.append('username', 'jom');
-      params.append('password', '6666');
-      this.$ajax.post('/register',params).then((res)=>{
+      // var params = new URLSearchParams();
+      // params.append('username', 'jom');
+      // params.append('password', '6666');
+      let params = {
+        username: 'linweicong',
+        password: 123456
+      }
+      this.$ajax.post('/addUser',params).then((res)=>{
         console.log('res', res);
       }).catch((e)=>{
 

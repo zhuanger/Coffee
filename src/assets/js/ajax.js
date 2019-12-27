@@ -13,7 +13,7 @@ const ajax = Axios.create({
   }
 })
 // 添加请求拦截器
-Axios.interceptors.request.use((config)=>{
+ajax.interceptors.request.use((config)=>{
   console.log('config', config);
   return config
 }, (error) => {
@@ -21,8 +21,13 @@ Axios.interceptors.request.use((config)=>{
 });
 
 // 添加响应拦截器
-Axios.interceptors.response.use((response)=> {
-  return response;
+ajax.interceptors.response.use((response)=> {
+  console.log('response:', response);
+  if(response.status === 200){
+    return response.data;
+  }else{
+    return Promise.reject(error);
+  }
 }, (error)=>{
   return Promise.reject(error); 
 });

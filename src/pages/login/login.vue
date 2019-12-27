@@ -48,6 +48,30 @@
           }, 1500);
           return;
         }
+        this.$ajax.post('/login', {
+          username: this.username,
+          password: this.password
+        }).then((res)=>{
+          console.log('res', res);
+          if(res.code === 200){
+            let userInfo = {
+              roleId: res.data.roleId,
+              username: self.username,
+              avatar: res.data.avatar
+            }
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            self.$router.push({name: 'home'});
+          }else{
+            // 提示错误
+            this.errUsernameText = res.msg;
+            setTimeout(() => {
+              self.hideErrText(res.code === 201 ? 'username':'password');
+            }, 1500);
+          }
+        }).catch((e)=>{
+          // 错误处理
+          alert('服务器出现异常');
+        })
       },
       hideErrText(type){
         let errType = {

@@ -2,15 +2,15 @@
   <section class="personal">
     <!-- <el-avatar shape="square" size="large" src="@A/images/avatar.png"></el-avatar> -->
     <div class="personal-avatar">
-      <img class="personal-avatar-image" src="@A/images/avatar.png" alt="">
+      <img class="personal-avatar-image" :src="userInfo.avatar" alt="">
     </div>
     <div class="personal-userName">
       <span>用户名：</span>
-      <span>哇哈哈哈哈哈哈哈</span>
+      <span>{{userInfo.username}}</span>
     </div>
     <div class="personal-userName">
       <span>角色：</span>
-      <span>店员</span>
+      <span>{{Number(userInfo.roleId) === 1 ? '店员' : '老板'}}</span>
     </div>
     <!-- <el-input placeholder="请输入内容" v-model="userName" clearable></el-input> -->
     <el-button type="primary" class="personal-change" @click="dialogFormVisible = true">修改个人资料</el-button>
@@ -42,11 +42,16 @@ export default {
       form: {
         avatar: '',
         userName: '',
-      }
+      },
+      userInfo:{}
     }
   },
   methods: {
     
+  },
+  created(){
+    this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    console.log(this.userInfo);
   }
 }
 </script>
