@@ -17,7 +17,7 @@
         <span for="">{{errPasswordText}}</span>
       </div>
       <a href="#" class="login-container-a">忘记密码</a>
-      <el-button type="primary" class="login-container-button" @click="login">登录</el-button>
+      <el-button type="primary" class="login-container-button" @click="login" v-loading.fullscreen.lock="fullscreenLoading">登录</el-button>
     </div>
   </div>
 </template>
@@ -30,6 +30,7 @@
         password: '',
         errUsernameText: '',
         errPasswordText: '',
+        fullscreenLoading: false
       }
     },
     methods: {
@@ -48,6 +49,7 @@
           }, 1500);
           return;
         }
+        this.fullscreenLoading = true;
         this.$ajax.post('/login', {
           username: this.username,
           password: this.password
@@ -55,21 +57,28 @@
           console.log('res', res);
           if(res.code === 200){
             let userInfo = {
-              roleId: res.data.roleId,
+              role_id: res.data.role_id,
               username: self.username,
               avatar: res.data.avatar
             }
             localStorage.setItem('userInfo', JSON.stringify(userInfo));
-            self.$router.push({name: 'home'});
+            setTimeout(() => {
+              self.fullscreenLoading = false;
+              self.$router.push({name: 'home'});
+            }, 2000);
+            
           }else{
             // 提示错误
             this.errUsernameText = res.msg;
             setTimeout(() => {
+              self.fullscreenLoading = false;
               self.hideErrText(res.code === 201 ? 'username':'password');
             }, 1500);
           }
         }).catch((e)=>{
           // 错误处理
+          self.fullscreenLoading = false;
+
           alert('服务器出现异常');
         })
       },

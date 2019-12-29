@@ -10,7 +10,7 @@
     </div>
     <div class="personal-userName">
       <span>角色：</span>
-      <span>{{Number(userInfo.roleId) === 1 ? '店员' : '老板'}}</span>
+      <span>{{Number(userInfo.role_id) === 1 ? '店员' : '老板'}}</span>
     </div>
     <!-- <el-input placeholder="请输入内容" v-model="userName" clearable></el-input> -->
     <el-button type="primary" class="personal-change" @click="dialogFormVisible = true">修改个人资料</el-button>
