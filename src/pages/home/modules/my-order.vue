@@ -9,7 +9,7 @@
         <el-table-column prop="address" label="商品名字"></el-table-column>
         <el-table-column prop="address" label="总价格" width="100"></el-table-column>
       </el-table>
-      <el-pagination background layout="prev, pager, next" :total="1000" class="myOrder-pagination"></el-pagination>
+      <el-pagination background layout="prev, pager, next" :total="total" class="myOrder-pagination"></el-pagination>
     </div>
   </section>
 </template>
@@ -17,37 +17,27 @@
 export default {
   data(){
     return{
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      },{
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      },{
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      },{
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
-      // total: 
+      tableData: [],
+      total: 0,
+      userInfo: {}
     }
+  },
+  methods: {
+    getData(){
+      let self = this; 
+      this.$ajax.post('/userorders', {
+        id: this.userInfo.id
+      }).then((res)=>{
+        console.log('res', res);
+        if(res.code === 200){
+          self.tableData = res.data.result;
+        }
+      })
+    }
+  },
+  mounted(){
+    this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    this.getData();
   }
 }
 </script>

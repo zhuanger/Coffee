@@ -54,19 +54,18 @@
           username: this.username,
           password: this.password
         }).then((res)=>{
-          console.log('res', res);
           if(res.code === 200){
             let userInfo = {
               role_id: res.data.role_id,
               username: self.username,
-              avatar: res.data.avatar
+              avatar: decodeURIComponent(window.atob(res.data.avatar)),
+              id: res.data.id
             }
             localStorage.setItem('userInfo', JSON.stringify(userInfo));
             setTimeout(() => {
               self.fullscreenLoading = false;
               self.$router.push({name: 'home'});
             }, 2000);
-            
           }else{
             // 提示错误
             this.errUsernameText = res.msg;

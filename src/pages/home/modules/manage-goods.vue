@@ -49,13 +49,25 @@
           image: '',
         },
         formLabelWidth: '120px',
-
+        userInfo: {}
       } 
     },
     methods:{
       submit(){
         
+      },
+      getData(){
+        let self = this; 
+        this.$ajax.post('/userorders', {
+          id: this.userInfo.id
+        }).then((res)=>{
+          console.log('res', res);
+        })
       }
+    },
+    mounted(){
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      this.getData();
     }
   }
 </script>
