@@ -19,11 +19,7 @@
         <el-form-item label="头像" class="personal-dialog-avatar">
           <div class="personal-dialog-avatar-right">
             <img class="personal-avatar-image" :src="form.avatar" alt="">
-            <!-- <el-input class="btn" type="file"  @change.native="updateAvatar($event)" ></el-input> -->
-            <div class="dialog-avatar-btnBox">
-              <el-button class="dialog-avatar-btnBox-btn" :loading="avatarLoading">修改头像</el-button>
-              <input type="file" class="dialog-avatar-btnBox-input" @change="updateAvatar($event)">
-            </div>
+            <imageAdd @updateAvatar="updateAvatar" title="修改头像"></imageAdd>
           </div>
         </el-form-item>
         <el-form-item label="用户名" class="personal-dialog-username">
@@ -38,6 +34,7 @@
   </section>
 </template>
 <script>
+import imageAdd from '@C/imageAdd';
 export default {
   data(){
     return{
@@ -54,33 +51,13 @@ export default {
     }
   },
   methods: {
-    updateAvatar(e){
-      let reader = new FileReader(), self = this, file = e.target.files[0];
-      this.avatarLoading = true;
-      if(file.size > (1024 * 12)){
-        this.$message({
-          showClose: true,
-          message: '图片不能超过12kb，无法上传',
-          type: 'warning'
-        });
-        return
-      }
-      reader.readAsDataURL(file); 
-      reader.onloadend = function(){
-        self.form.avatar =  reader.result;
-        self.avatarLoading = false;
-      },
-      reader.onerror = function(){
-        this.avatarLoading = false;
-        this.$message({
-          showClose: true,
-          message: '上传头像失败，请重试',
-          type: 'error'
-        });
-      }
+    updateAvatar(avatar){
+      this.form.avatar =  avatar;
     },
     submit(){
       let self = this;
+      if(this.btnLoading) return;
+      this.btnLoading = true;
       this.$ajax.post('/updateUserInfo', {
         id: this.userInfo.id,
         avatar: this.form.avatar.length === 0 ? encodeURIComponent(this.userInfo.avatar) : encodeURIComponent(this.form.avatar),
@@ -92,8 +69,19 @@ export default {
             message: '修改成功',
             type: 'success'
           });
-          
+          self.btnLoading = false;
+          localStorage.removeItem('userInfo');
+          self.$router.push({name: 'login'});
+        }else{
+          self.btnLoading = false;
         }
+      }).catch(()=>{
+        self.btnLoading = false;
+        self.$message({
+          showClose: true,
+          message: '服务器出错',
+          type: 'warm'
+        });
       })
     },
   },
@@ -101,6 +89,9 @@ export default {
     this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
     this.form.avatar = this.userInfo.avatar;
   },
+  components: {
+    imageAdd
+  }
 }
 </script>
 <style lang="scss" scoped>
