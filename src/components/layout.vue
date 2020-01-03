@@ -8,12 +8,21 @@
         </svg>
       </a>
     </div>
-    <el-row :gutter="20"  type="flex" justify="center">
+    <el-row :gutter="20"  type="flex" justify="center" v-if="imagesItem.length > 0">
       <el-col :span="6" @mouseover.native="addAndRemoveAvtive(index, 1)" @mouseleave.native="addAndRemoveAvtive(index, 2)" 
-        :class=" isActiveItem[index] ? 'el-col-active' :''" v-for="(item,index) in imagesItem" :key="index">
+        :class=" isActiveItem[index] ? 'el-col-active' :''" v-for="(item,index) in 3" :key="index">
         <div :class="['grid-content bg-purple', isActiveItem[index] ? 'bg-purple-active' :'']">
-          <img :src="item" alt="" class="el-col-img">
-          <span class="el-col-name">咖啡豆</span>
+          <img :src="imagesItem[item-1]" alt="" class="el-col-img">
+          <span class="el-col-name">{{imagesItem[item-1].product }}</span>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20"  type="flex" justify="center" v-if="imagesItem.length > 0">
+      <el-col :span="6" @mouseover.native="addAndRemoveAvtive(index+3, 1)" @mouseleave.native="addAndRemoveAvtive(index+3, 2)" 
+        :class=" isActiveItem[index+3] ? 'el-col-active' :''" v-for="(item,index) in 3" :key="index">
+        <div :class="['grid-content bg-purple', isActiveItem[index+3] ? 'bg-purple-active' :'']">
+          <img :src="imagesItem[item+2]" alt="" class="el-col-img">
+          <span class="el-col-name">{{imagesItem[item+2].product}}</span>
         </div>
       </el-col>
     </el-row>
@@ -30,7 +39,7 @@
     },
     data(){
       return{
-        isActiveItem: [false, false, false]
+        isActiveItem: [false, false, false, false, false, false]
       }
     },
     methods:{
@@ -77,6 +86,7 @@
     } 
   }
   .el-col {
+    cursor: pointer;
     position: relative;
     bottom: 0px;
     border-radius: 4px;

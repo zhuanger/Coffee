@@ -8,11 +8,11 @@
         </el-carousel-item>
         <el-carousel-item>
           <!-- <swiper class="index-swiper" :imageItem="imageItem"></swiper> -->
-          <layout class="index-layout" title="热销商品" :imagesItem="layoutItem"></layout>
+          <layout class="index-layout" title="热销商品" :imagesItem="hotItem"></layout>
         </el-carousel-item>
         <el-carousel-item>
           <!-- <swiper class="index-swiper" :imageItem="imageItem"></swiper> -->
-          <layout class="index-layout" title="最新商品" :imagesItem="layoutItem"></layout>
+          <layout class="index-layout" title="最新商品" :imagesItem="newItem"></layout>
           <footer class="index-footer">
             <div class="index-footer-our"><a href="#">关于我们</a><el-divider direction="vertical"></el-divider><a href="#">联系我们</a></div>
             <span class="index-footer-copyright">Copyright @2019 Me All Rights Reserved</span>
@@ -39,6 +39,8 @@
         isMouseWheel: false,
         windowHeight: window.innerHeight + 'px', //整个页面的高度
         swiperHeight: '', // 第一个banner的高度
+        hotItem: [],
+        newItem: [],
         imageItem: [require('../../assets/images/testImage-1.jpg'),require('../../assets/images/testImage-2.jpg'),require('../../assets/images/testImage-1.jpg')],
         layoutItem: [require('../../assets/images/testImage.jpg'),require('../../assets/images/testImage.jpg'),require('../../assets/images/testImage.jpg')]
       }
@@ -60,10 +62,34 @@
       mousewheeFn(delta){
         // -1：banner向上  1：banner向下
         delta === -1 ? this.$refs.carousel.next() : this.$refs.carousel.prev();
+        if(this.$refs.carousel.activeIndex === 1){
+          this.getGoods(0);
+        }else if(this.$refs.carousel.activeIndex === 2){
+          this.getGoods(1);
+        }
         setTimeout(() => {
           this.isMouseWheel = false
         }, 650);
       },
+      getGoods(type){
+        if(this.hotItem.length === 6 && type !== 1) return;
+        if(this.newItem.length === 6 && type !== 0) return;
+        let self = this, url = '';
+        if(type === 0){
+          url = '/hotgoods';
+        }else if(type === 1){
+          url = '/newgoods';
+        }
+        this.$ajax.post(url).then((res)=>{
+          if(res.code === 200){
+            if(type === 0){
+              self.hotItem = res.data.result;
+            }else if(type === 1){
+              self.newItem = res.data.result;
+            }         
+          }
+        })
+      }
     },
     mounted(){
       this.addmousewheel();

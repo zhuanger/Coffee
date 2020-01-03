@@ -9,7 +9,7 @@
       <el-menu-item index="4" route="/order">员工点餐系统</el-menu-item>
       <el-input  class="header-search" placeholder="请输入搜索内容" prefix-icon="el-icon-search" v-model="search" ></el-input>
       
-      <el-menu-item index="5" class="el-menu-login" :route="hasLogin ? '/home' : '/login'">登陆</el-menu-item>
+      <el-menu-item index="5" class="el-menu-login" :route="hasLogin ? '/home' : '/login'">{{hasLogin ? '个人中心' : '登陆'}}</el-menu-item>
     </el-menu>
     <div class="line"></div>
   </header>
@@ -46,7 +46,8 @@
         set(){},
       },
       hasLogin(){
-        return localStorage.getItem('password') ? true : false;
+        console.log(this.$store.state.hasLogin)
+        return this.$store.state.hasLogin;
       }
     }
   }

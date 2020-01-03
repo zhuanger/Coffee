@@ -6,9 +6,12 @@
       <el-table-column prop="product" label="名字" width="120"></el-table-column>
       <el-table-column prop="price" label="价格" width="140"></el-table-column>
       <el-table-column prop="add_date" label="上架时间" width="140"></el-table-column>
+      <el-table-column prop="image" label="商品图片" width="140"></el-table-column>
       <el-table-column prop="address" label="操作" >
-        <el-button type="primary">编辑</el-button>
-        <el-button type="danger">删除</el-button>
+        <template slot-scope="scope">
+          <el-button type="primary" @click="edit(scope.row, scope.$index)">编辑</el-button>
+          <el-button type="danger">删除</el-button>
+        </template>
       </el-table-column>
     </el-table>
     <el-pagination background layout="prev, pager, next" :total="total" class="myOrder-pagination"></el-pagination>
@@ -30,14 +33,14 @@
         <el-form-item label="商品图片" :label-width="formLabelWidth">
           <img class="manageGoods-avatar-image" :src="form.image" alt="">
           <imageAdd @updateAvatar="updateAvatar" title="上传图片"></imageAdd>
-        </el-form-item>
-        
+        </el-form-item>       
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="submit" :loading="btnLoading">确 定</el-button>
       </div>
     </el-dialog>
+
   </section>
 </template>
 <script>
@@ -102,6 +105,10 @@
             self.page++;
           }
         })
+      },
+      edit(item){
+        this.form = item;
+        this.dialogFormVisible = true;
       }
     },
     mounted(){
