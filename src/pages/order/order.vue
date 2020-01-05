@@ -3,28 +3,15 @@
     <div class="order-left">
       <ul class="order-left-ul">
         <li v-for="(item, index) of liItem" :key="index" @click="changeTab(index)" :class="['order-left-ul-li', index === clickActive ? 'active':'']">
-          {{item.name}}
+          {{item.type}}
         </li>
       </ul>
     </div>
     <div class="order-right">
-      <good></good>
-      <good></good>
-      <good></good>
-      <good></good>
-      <good></good>
-      <good></good>
-      <good></good>
-      <good></good>
-      <good></good>
-      <good></good>
-      <good></good>
-      <good></good>
-      <good></good>
-      <good></good>
-      <good></good>
-
+      <good v-for="(item, index) of goodsItem" :key="index" :item="item"></good>
     </div>
+    <el-pagination background layout="prev, pager, next" :total="total" class="order-pagination"
+        @prev-click="changePage" @next-click="changePage" @current-change="getData"></el-pagination>
     <div class="order-ope">
       <button class="order-ope-cart button" @click="drawer = true">
         <i class="num">1</i>
@@ -48,15 +35,9 @@
       <cart-good></cart-good>
       <cart-good></cart-good>
       <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
+      
     </el-drawer>
+
   </div>
 </template>
 <script>
@@ -65,11 +46,14 @@
   export default {
     data(){
       return{
-        liItem:[{name: '咖啡'},{name: '轻食物'}],
+        liItem:[],
         clickActive: 0,
         drawer: false,
         direction: 'ltr',
-        num: 1
+        num: 1,
+        orderType: 1,
+        total: 0,
+        goodsItem: []
       }
     },
     methods: {
@@ -78,7 +62,28 @@
       },
       handleChange(value) {
         console.log(value);
+      },
+      getType(){
+        this.$ajax.get('/goodtypes').then((res)=>{
+          console.log(res);
+          this.liItem = res.data;
+        })
+      },
+      getData(page = 1){
+        let self = this;
+        this.$ajax.post('/goodtypesinfo', {good_types_id: this.clickActive+1, page: page}).then((res)=>{
+          if(res.code === 200){
+            self.goodsItem = res.data.pageinfo;
+          }
+        })
+      },
+      changePage(page){
+        this.getData(page)
       }
+    },
+    created(){
+      this.getType();
+      this.getData()
     },
     components: {
       good,
@@ -101,9 +106,13 @@
           cursor: pointer;
           line-height: 50px;
           text-align: center;
+          border-bottom: 1px solid #ddd;
           &.active{
             background-color: $text-color;
             color: #ffffff;
+          }
+          &:last-child{
+            border-bottom: 0px;
           }
         }
       }      
@@ -174,7 +183,9 @@
         }
       }
     }
-    
+    &-pagination{
+      float: left;
+    }
   }
   
 </style>

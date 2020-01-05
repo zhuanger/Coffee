@@ -62,7 +62,6 @@
               id: res.data.id
             }
             localStorage.setItem('userInfo', JSON.stringify(userInfo));
-            console.log(self.$store.commit);
             self.$store.commit('SET_LOGIN', true);
             setTimeout(() => {
               self.fullscreenLoading = false;

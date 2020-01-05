@@ -14,7 +14,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination background layout="prev, pager, next" :total="total" class="myOrder-pagination"></el-pagination>
+    <el-pagination background layout="prev, pager, next" :page-count="total" class="myOrder-pagination"
+    @prev-click="changePage" @next-click="changePage" @current-change="getData"></el-pagination>
 
     <el-dialog title="添加商品" :visible.sync="dialogFormVisible">
       <el-form :model="form">
@@ -49,7 +50,6 @@
     data(){
       return{
         tableData: [],
-        // total: 
         dialogFormVisible: false,
         btnLoading: false, // 按钮Loading
         page: 1,
@@ -92,23 +92,31 @@
           });
         })
       },
-      getData(){
+      getData(page){
         let self = this; 
+        if(page){
+          this.page = page;
+        }
         this.$ajax.post('/allGoods', {
           page: this.page
         }).then((res)=>{
           if(res.code === 200){
-            res.data.result.forEach((e)=>{
+            res.data.pageinfo.forEach((e)=>{
               e.add_date = e.add_date.split('T')[0]; 
             });
-            self.tableData = self.tableData.length === 0 ? [].concat(res.data.result) : self.tableData.concat(res.data.result);
+            self.tableData = res.data.pageinfo;
             self.page++;
+            self.total = res.data.pagenum;
           }
         })
       },
       edit(item){
         this.form = item;
         this.dialogFormVisible = true;
+      },
+      changePage(page){
+        this.page = page;
+        this.getData();
       }
     },
     mounted(){

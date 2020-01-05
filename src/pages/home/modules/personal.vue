@@ -14,6 +14,7 @@
     </div>
     <!-- <el-input placeholder="请输入内容" v-model="userName" clearable></el-input> -->
     <el-button type="primary" class="personal-change" @click="dialogFormVisible = true">修改个人资料</el-button>
+    <el-button type="primary" class="personal-logout" @click="logout">退出登陆</el-button>
     <el-dialog title="修改个人资料" :visible.sync="dialogFormVisible" class="personal-dialog">
       <el-form :model="form">
         <el-form-item label="头像" class="personal-dialog-avatar">
@@ -84,6 +85,10 @@ export default {
         });
       })
     },
+    logout(){
+      localStorage.removeItem('userInfo');
+      this.$router.push({path: 'login'});
+    }
   },
   created(){
     this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -101,6 +106,11 @@ export default {
     flex-direction: column;
     position: relative;
     &-change{
+      position: absolute;
+      right: 130px;
+      top: 10px;
+    }
+    &-logout{
       position: absolute;
       right: 20px;
       top: 10px;

@@ -8,11 +8,11 @@
         </el-carousel-item>
         <el-carousel-item>
           <!-- <swiper class="index-swiper" :imageItem="imageItem"></swiper> -->
-          <layout class="index-layout" title="热销商品" :imagesItem="hotItem"></layout>
+          <layout class="index-layout" title="热销商品" :imagesItem="hotItem" type="hot"></layout>
         </el-carousel-item>
         <el-carousel-item>
           <!-- <swiper class="index-swiper" :imageItem="imageItem"></swiper> -->
-          <layout class="index-layout" title="最新商品" :imagesItem="newItem"></layout>
+          <layout class="index-layout" title="最新商品" :imagesItem="newItem" type="new"></layout>
           <footer class="index-footer">
             <div class="index-footer-our"><a href="#">关于我们</a><el-divider direction="vertical"></el-divider><a href="#">联系我们</a></div>
             <span class="index-footer-copyright">Copyright @2019 Me All Rights Reserved</span>

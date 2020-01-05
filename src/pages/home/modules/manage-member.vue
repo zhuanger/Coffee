@@ -13,6 +13,10 @@
         
       </el-table-column>
     </el-table>
+
+    <el-pagination background layout="prev, pager, next" :page-count="total" class="myOrder-pagination"
+    @prev-click="changePage" @next-click="changePage" @current-change="getData"></el-pagination>
+
     <el-dialog title="添加成员" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="用户名" :label-width="formLabelWidth">
@@ -102,23 +106,27 @@ export default {
         self.btnLoading = false;
       })
     },
-    getData(){
-      let self = this;
-      if(this.isLoading || this.tableData.length === this.total){
+    getData(page){
+      if(this.isLoading){
         return;
       }
       this.isLoading = true;
-      this.$ajax.post('/getAllUser').then((res)=>{
+      if(page){
+        this.page = page;
+      }
+      let self = this;
+      this.$ajax.post('/getAllUser', {page: this.page}).then((res)=>{
         if(res.code === 200){
-          res.data.forEach((e)=>{
+          res.data.pageinfo.forEach((e)=>{
             if(e.role_id === 1){
               e.role_id = '店员';
             }else if(e.role_id === 2){
               e.role_id = '老板';
             }
           });
-          self.tableData = self.tableData.length === 0 ? [].concat(res.data) : self.tableData.concat(res.data);
-          self.total = res.total;
+          self.tableData = res.data.pageinfo;
+          self.total = res.data.pagenum;
+          self.page ++;
           self.isLoading = false;
         }
       }).catch((e)=>{
@@ -195,6 +203,10 @@ export default {
           self.btnLoading = false;
           self.permissionSetVisible = false;
         })
+    },
+    changePage(page){
+      this.page = page;
+      this.getData();
     }
   },
   mounted(){

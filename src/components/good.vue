@@ -2,10 +2,10 @@
   <div class="good">
     <img src="@A/images/testImage.jpg" alt="" class="good-img">
     <div class="good-text">
-      <span class="money">￥41.5元</span>
-      <p class="good-text-title">面吧</p>
+      <span class="money">￥{{item.price}}元</span>
+      <p class="good-text-title">{{item.product}}</p>
       <div class="good-text-content">
-        <span class="stock">库存：999</span>
+        <span class="stock">库存：{{item.stock}}</span>
         <i class="cart"></i>
       </div>
     </div>
@@ -13,7 +13,9 @@
 </template>
 <script>
 export default {
-  
+  props: {
+    item: {}
+  }
 }
 </script>
 <style lang="scss" scoped>

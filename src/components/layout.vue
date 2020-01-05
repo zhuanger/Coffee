@@ -2,7 +2,7 @@
   <div class="layout">
     <div class="layout-top">
       <h2 class="layout-top-title">{{title}}</h2>
-      <a class="layout-top-a" href="#">查看更多
+      <a class="layout-top-a" href="#" @click="gotoPage">查看更多
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-right-line"></use>
         </svg>
@@ -35,7 +35,8 @@
       title:{
         default: ''
       },
-      imagesItem: {}
+      imagesItem: {},
+      type: {}
     },
     data(){
       return{
@@ -46,6 +47,9 @@
       addAndRemoveAvtive(index, type){
         this.$set(this.isActiveItem, index , type === 1 ? true : false)
       },
+      gotoPage(){
+        this.$router.push({path: 'search', query: {type: this.type}});
+      }
     },
     mounted(){
     }

@@ -9,7 +9,8 @@
         <el-table-column prop="address" label="商品名字"></el-table-column>
         <el-table-column prop="address" label="总价格" width="100"></el-table-column>
       </el-table>
-      <el-pagination background layout="prev, pager, next" :total="total" class="myOrder-pagination"></el-pagination>
+      <el-pagination background layout="prev, pager, next" :total="total" class="myOrder-pagination"
+      @prev-click="changePage" @next-click="changePage" @current-change="getData"></el-pagination>
     </div>
   </section>
 </template>
@@ -19,20 +20,29 @@ export default {
     return{
       tableData: [],
       total: 0,
-      userInfo: {}
+      userInfo: {},
     }
   },
   methods: {
-    getData(){
+    getData(page){
       let self = this; 
+      if(page){
+        this.page = page;
+      }
       this.$ajax.post('/userorders', {
-        id: this.userInfo.id
+        user_id: this.userInfo.id,
+        page: this.page
       }).then((res)=>{
         console.log('res', res);
         if(res.code === 200){
-          self.tableData = res.data.result;
+          self.tableData = res.data.pageinfo;
+          self.total = res.data.pagenum;
+          self.page++;
         }
       })
+    },
+    changePage(){
+
     }
   },
   mounted(){
