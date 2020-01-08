@@ -80,12 +80,15 @@
         }else if(type === 1){
           url = '/newgoods';
         }
-        this.$ajax.post(url).then((res)=>{
+        this.$ajax.post(url, {
+          page: 1,
+          pageSize: 6
+        }).then((res)=>{
           if(res.code === 200){
             if(type === 0){
-              self.hotItem = res.data.result;
+              self.hotItem = res.data.hotinfo;
             }else if(type === 1){
-              self.newItem = res.data.result;
+              self.newItem = res.data.newinfo;
             }         
           }
         })

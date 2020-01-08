@@ -1,17 +1,31 @@
 <template>
   <section class="cartGood">
-    <h4 class="cartGood-title">烟笋拉润反</h4>
+    <h4 class="cartGood-title">{{item.product}}</h4>
     <div class="cartGood-right">
-      <span class="cartGood-price">￥29.2</span>
-      <el-input-number v-model="num"  :min="1" :max="10" label="描述文字" size="small"></el-input-number>
+      <span class="cartGood-price">￥{{item.price * num}}</span>
+      <el-input-number v-model="num"  :min="1" :max="100" label="描述文字" size="small"></el-input-number>
+      <i class="el-icon-close cartGood-close" @click="deleteGood"></i>
     </div>
   </section>
 </template>
 <script>
 export default {
   props: {
-    num: {
-      default: 1
+    item: {},
+  },
+  data(){
+    return{
+      num: 1
+    }
+  },
+  methods: {
+    deleteGood(){
+      this.$emit('deleteItem');
+    }
+  },
+  watch: {
+    num(n){
+      this.$emit('changeNum', n);
     }
   }
 }
@@ -34,6 +48,10 @@ export default {
       color: red;
       margin: 0 20px;
     };
+    &-close{
+      cursor: pointer;
+      margin-left: 5px;
+    }
   }
   /deep/ .el-input-number--small{
     width: 100px;

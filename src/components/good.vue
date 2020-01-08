@@ -6,7 +6,7 @@
       <p class="good-text-title">{{item.product}}</p>
       <div class="good-text-content">
         <span class="stock">库存：{{item.stock}}</span>
-        <i class="cart"></i>
+        <i class="cart" @click="addGood"></i>
       </div>
     </div>
   </div>
@@ -15,6 +15,16 @@
 export default {
   props: {
     item: {}
+  },
+  data(){
+    return{
+
+    }
+  },
+  methods: {
+    addGood(){
+      this.$emit('addGood', this.item);
+    }
   }
 }
 </script>
@@ -61,6 +71,7 @@ export default {
           display: inline-block;
           float: right;
           margin: 7px 9px 0 0;
+          cursor: pointer;
         }
         .stock{
           color: $grey-text-color;

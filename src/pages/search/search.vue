@@ -1,22 +1,10 @@
 <template>
   <section class="search">
     <div class="search-container">
-      <!-- <good class="good"></good>
-      <good class="good"></good>
-      <good class="good"></good>
-      <good class="good"></good>
-      <good class="good"></good>
-      <good class="good"></good>
-      <good class="good"></good>
-      <good class="good"></good>
-      <good class="good"></good>
-      <good class="good"></good>
-      <good class="good"></good>
-      <good class="good"></good>
-      <good class="good"></good> -->
+      <good class="good" v-for="(item, index) in goodsItem" :key="index" :item="item" @addGood="addGood"></good>
       <div class="clear"></div>
     </div>
-    <el-pagination background layout="prev, pager, next" :total="1000" class="search-pagination"></el-pagination>
+    <el-pagination background layout="prev, pager, next" :page-count="total" class="search-pagination"></el-pagination>
   </section>
 </template>
 <script>
@@ -27,7 +15,9 @@ export default {
   },
   data(){
     return{
-      type: ''
+      type: '',
+      goodsItem: [],
+      total: 3
     }
   },
   methods: {
@@ -37,12 +27,24 @@ export default {
         url = '/hotgoods'
       }else if(this.type === 'new'){
         url = '/newgoods';
+      }else{
+        url = '/selectgood';
       }
       this.$ajax.post(url).then((res)=>{
-        if(res.code === 200){
-
+        if(res.code === 200){  
+          if(this.type === 'hot'){
+            self.goodsItem = res.data.hotinfo;
+          }else if(this.type === 'new'){
+            self.goodsItem = res.data.newinfo;
+          }else{
+            self.goodsItem = '/selectgood';
+          }      
+          self.total = res.data.pagenum;
         }
       })
+    },
+    addGood(value){
+      
     }
   },
   created(){

@@ -8,36 +8,29 @@
       </ul>
     </div>
     <div class="order-right">
-      <good v-for="(item, index) of goodsItem" :key="index" :item="item"></good>
+      <good v-for="(item, index) of goodsItem" :key="index" :item="item" @addGood="addGood"></good>
     </div>
-    <el-pagination background layout="prev, pager, next" :total="total" class="order-pagination"
+    <el-pagination background layout="prev, pager, next" :page-count="total" class="order-pagination"
         @prev-click="changePage" @next-click="changePage" @current-change="getData"></el-pagination>
     <div class="order-ope">
       <button class="order-ope-cart button" @click="drawer = true">
-        <i class="num">1</i>
+        <i class="num" v-if="cartItem.length!==0">{{cartItem.length === 0 ? '' : cartItem.length}}</i>
       </button>
-      <button class="order-ope-top button"><i class="el-icon-arrow-up"></i></button>
+      <button class="order-ope-top button" @click="gotoTop"><i class="el-icon-arrow-up"></i></button>
     </div>
     <el-drawer title="已选商品" :visible.sync="drawer" :direction="direction" class="order-drawer">
       <div slot="title" class="order-drawer-top">
         <h4>已选商品</h4>
         <div class="order-drawer-top-right">
-          <span>总共：<span class="allPrice"><strong>￥21.4</strong></span></span>
+          <span>总共：<span class="allPrice"><strong>{{totalPrice}}</strong></span></span>
           <el-button type="primary">去结算</el-button>
         </div>
       </div>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      <cart-good></cart-good>
-      
-    </el-drawer>
+      <cart-good v-for="(item, index) in cartItem" :key="index" :item="item" @deleteItem="deleteItem(index)"
+       @changeNum="changeNum(arguments, index)">
 
+      </cart-good>
+    </el-drawer>
   </div>
 </template>
 <script>
@@ -53,19 +46,22 @@
         num: 1,
         orderType: 1,
         total: 0,
-        goodsItem: []
+        goodsItem: [],
+        cartItem: [],
+        totalPrice: 0
       }
     },
     methods: {
       changeTab(index){
         this.clickActive = index;
+        this.page = 1;
+        this.getData();
       },
       handleChange(value) {
         console.log(value);
       },
       getType(){
         this.$ajax.get('/goodtypes').then((res)=>{
-          console.log(res);
           this.liItem = res.data;
         })
       },
@@ -74,11 +70,31 @@
         this.$ajax.post('/goodtypesinfo', {good_types_id: this.clickActive+1, page: page}).then((res)=>{
           if(res.code === 200){
             self.goodsItem = res.data.pageinfo;
+            self.total = res.data.pagenum;
           }
         })
       },
       changePage(page){
         this.getData(page)
+      },
+      addGood(value){
+        this.$set(value, 'buyNum', 1);
+        this.cartItem.push(value);
+      },
+      deleteItem(index){
+        this.cartItem.splice(index, 1);
+      },
+      gotoTop(){
+        let htmlDom = document.querySelector('html');
+        let _setInterval = setInterval(()=>{
+          htmlDom.scrollTop = htmlDom.scrollTop - 10;
+          if(htmlDom.scrollTop === 0){
+            clearInterval(_setInterval);
+          }
+        }, 10);
+      },
+      changeNum(args, index){
+        this.$set(this.cartItem[index], 'buyNum', args[0]);
       }
     },
     created(){
@@ -88,6 +104,19 @@
     components: {
       good,
       cartGood
+    },
+    watch: {
+      'cartItem': {
+        deep: true,
+        immediate: true,
+        handler(n){
+          let total = 0;
+          n.forEach((e, index)=>{          
+            total = total + (Number(e.price) * Number(e.buyNum));
+          })
+          this.totalPrice = total;
+        }
+      }
     }
   }
 </script>

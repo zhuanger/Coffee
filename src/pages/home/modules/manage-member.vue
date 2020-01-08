@@ -5,7 +5,7 @@
     <el-table :data="tableData" stripe style="width: 100%" v-loading="isLoading">
       <el-table-column prop="username" label="用户名" width="120"></el-table-column>
       <el-table-column prop="role_id" label="角色" width="140"></el-table-column>
-      <el-table-column prop="address" label="操作" type="index">
+      <el-table-column prop="address" label="操作" type="index" width="240">
         <template slot-scope="scope">
           <el-button type="primary" @click="permission(scope.row, scope.$index)">权限设置</el-button>
           <el-button type="danger" @click="deleteUser(scope.row, scope.$index)">删除</el-button>
