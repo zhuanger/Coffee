@@ -1,6 +1,6 @@
 <template>
   <div class="activity">
-    <swiper :imageItem="imageItem"></swiper>
+    <swiper :imageItem="imageItem" @click.native="gotoPage"></swiper>
   </div>
 </template>
 <script>
@@ -13,6 +13,11 @@
     },
     components: {
       swiper
+    },
+    methods: {
+      gotoPage(){
+        this.$router.push({path: '/page'})
+      }
     }
   }
 </script>

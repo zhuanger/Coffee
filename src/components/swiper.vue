@@ -25,6 +25,7 @@
     opacity: 0.75;
     line-height: 200px;
     margin: 0;
+    cursor: pointer;
   }
   
   .el-carousel__item:nth-child(2n) {
@@ -38,6 +39,7 @@
     &-img{
       width: 100%;
       height: 100%;
+      cursor: pointer;
     }
   }
 </style>

@@ -45,7 +45,7 @@
 </script>
 <style lang="scss" scoped>
   .el-aside{
-    border: 1px solid red;
+    // border: 1px solid red;
   }
   .home{
     padding: 40px 60px;
@@ -61,7 +61,8 @@
       }
     }
     &-main{
-      border: 1px solid red;
+      border: 1px solid #eeeeee;
+      margin-left: 5px;
     }
   }
 </style>

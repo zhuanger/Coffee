@@ -4,7 +4,9 @@
       <good class="good" v-for="(item, index) in goodsItem" :key="index" :item="item" @addGood="addGood"></good>
       <div class="clear"></div>
     </div>
-    <el-pagination background layout="prev, pager, next" :page-count="total" class="search-pagination"></el-pagination>
+    <el-pagination background layout="prev, pager, next" :page-count="total" class="search-pagination"
+    @prev-click="changePage" @next-click="changePage" @current-change="searchData">
+      </el-pagination>
   </section>
 </template>
 <script>
@@ -17,12 +19,17 @@ export default {
     return{
       type: '',
       goodsItem: [],
-      total: 3
+      total: 3,
+      page: 1
     }
   },
   methods: {
-    searchData(){
+    searchData(page){
+      console.log('page', page);
       let self = this, url;
+      if(page){
+        this.page = page;
+      }
       if(this.type === 'hot'){
         url = '/hotgoods'
       }else if(this.type === 'new'){
@@ -30,7 +37,7 @@ export default {
       }else{
         url = '/selectgood';
       }
-      this.$ajax.post(url).then((res)=>{
+      this.$ajax.post(url, {page: page}).then((res)=>{
         if(res.code === 200){  
           if(this.type === 'hot'){
             self.goodsItem = res.data.hotinfo;
@@ -39,19 +46,24 @@ export default {
           }else{
             self.goodsItem = '/selectgood';
           }      
+          self.page++;
           self.total = res.data.pagenum;
         }
       })
     },
     addGood(value){
       
+    },
+    changePage(page){
+      this.page = page;
+      this.searchData();
     }
   },
   created(){
     this.type = this.$route.query.type;
   },
   mounted(){
-    this.searchData();
+    this.searchData(1);
   }
 }
 </script>

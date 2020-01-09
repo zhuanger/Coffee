@@ -125,6 +125,13 @@
     },
     components: {
       imageAdd
+    },
+    watch: {
+      dialogFormVisible(n, o){
+        if(!n){
+          this.form = this.$options.data().form;
+        }
+      }
     }
   }
 </script>
@@ -135,5 +142,9 @@
     &-image{
       height: 120px;
     }
+  }
+  .myOrder-pagination{
+    text-align: center;
+    margin-top: 10px;
   }
 </style>

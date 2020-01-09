@@ -14,8 +14,14 @@
           <!-- <swiper class="index-swiper" :imageItem="imageItem"></swiper> -->
           <layout class="index-layout" title="最新商品" :imagesItem="newItem" type="new"></layout>
           <footer class="index-footer">
-            <div class="index-footer-our"><a href="#">关于我们</a><el-divider direction="vertical"></el-divider><a href="#">联系我们</a></div>
-            <span class="index-footer-copyright">Copyright @2019 Me All Rights Reserved</span>
+            <div class="index-footer-our" >
+              <a href="#" @click="gotoPage('/about')">关于我们</a>
+              <el-divider direction="vertical"></el-divider>
+              <a href="#" >联系我们 020-8888888</a>
+              <el-divider direction="vertical"></el-divider>
+              <a href="/index" >友情链接</a>
+            </div>
+            <span class="index-footer-copyright" >Copyright @2019 Me All Rights Reserved</span>
           </footer> 
         </el-carousel-item>
       </el-carousel>
@@ -92,6 +98,9 @@
             }         
           }
         })
+      },
+      gotoPage(path){
+        this.$router.push({path: path})
       }
     },
     mounted(){
