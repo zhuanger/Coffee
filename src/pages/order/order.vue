@@ -7,11 +7,17 @@
         </li>
       </ul>
     </div>
-    <div class="order-right">
-      <good v-for="(item, index) of goodsItem" :key="index" :item="item" @addGood="addGood"></good>
+    <div class="order-right" v-if="goodsItem.length!==0">
+      <div>
+        <good v-for="(item, index) of goodsItem" :key="index" :item="item" @addGood="addGood"></good>  
+      </div>
+      <el-pagination background layout="prev, pager, next" :page-count="total" class="order-pagination"
+        @prev-click="changePage" @next-click="changePage" @current-change="getData" v-if="goodsItem.length!==0"></el-pagination>
     </div>
-    <el-pagination background layout="prev, pager, next" :page-count="total" class="order-pagination"
-        @prev-click="changePage" @next-click="changePage" @current-change="getData"></el-pagination>
+    
+    <div class="no-result" v-if="goodsItem.length===0">
+      <p>没有找到此类型商品</p>
+    </div>
     <div class="order-ope">
       <button class="order-ope-cart button" @click="drawer = true">
         <i class="num" v-if="cartItem.length!==0">{{cartItem.length === 0 ? '' : cartItem.length}}</i>
@@ -23,7 +29,7 @@
         <h4>已选商品</h4>
         <div class="order-drawer-top-right">
           <span>总共：<span class="allPrice"><strong>{{totalPrice}}</strong></span></span>
-          <el-button type="primary">去结算</el-button>
+          <el-button type="primary" @click="balance">去结算</el-button>
         </div>
       </div>
       <cart-good v-for="(item, index) in cartItem" :key="index" :item="item" @deleteItem="deleteItem(index)"
@@ -95,6 +101,9 @@
       },
       changeNum(args, index){
         this.$set(this.cartItem[index], 'buyNum', args[0]);
+      },
+      balance(){
+
       }
     },
     created(){
@@ -124,8 +133,9 @@
   .order{
     margin-top: 50px;
     padding: 0 70px;
+    display: flex;
     &-left{
-      float: left;
+      // float: left;
       margin-right: 120px;
       &-ul{
         &-li{
@@ -147,7 +157,8 @@
       }      
     }
     &-right{
-      float: left;
+      display: flex;
+      flex-direction: column ;
       width: 980px;
     }
     &-ope{
@@ -213,7 +224,21 @@
       }
     }
     &-pagination{
-      float: left;
+      text-align: center;
+    }
+  }
+  .no-result{
+    margin-top: 70px;
+    margin-left: 200px;
+    width: 400px;
+    height: 250px;
+    background-image: url("../../assets/images/ku.png");
+    background-repeat: no-repeat;
+    background-position:center;
+    text-align: center;
+    >p{
+      font-size: 32px;
+
     }
   }
   

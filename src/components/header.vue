@@ -28,7 +28,7 @@
         this.activeIndex = key; 
       },
       searchClick(){
-        this.$router.push({path: '/search'})
+        this.$router.push({path: '/search', query: {keyword: this.search}})
       },    },
     data(){
       return{

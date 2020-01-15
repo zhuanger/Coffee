@@ -1,15 +1,23 @@
 <template>
   <section class="manageGoods">
     <!-- 商品 价格 上架时间 操作：删除。修改 -->
-    <el-button type="primary" class="manage-add" @click="dialogFormVisible = true">添加商品</el-button>
+    <el-button type="primary" class="manage-add" @click="edit('1', '1', 'create')">添加商品</el-button>
     <el-table :data="tableData" stripe style="width: 100%">
       <el-table-column prop="product" label="名字" width="120"></el-table-column>
       <el-table-column prop="price" label="价格" width="140"></el-table-column>
       <el-table-column prop="add_date" label="上架时间" width="140"></el-table-column>
-      <el-table-column prop="image" label="商品图片" width="140"></el-table-column>
+      <el-table-column prop="goodType" label="商品分类" width="140"></el-table-column>
+      <el-table-column label="商品图片" width="200">
+        <template slot-scope="scope">
+          <!-- <i class="el-icon-time"></i>-->
+          <!-- <span style="margin-left: 10px">{{ scope.row }}</span>  -->
+          
+          <img :src="scope.row.image" alt="" style="width: 140px;">
+        </template>
+      </el-table-column>
       <el-table-column prop="address" label="操作" >
         <template slot-scope="scope">
-          <el-button type="primary" @click="edit(scope.row, scope.$index)">编辑</el-button>
+          <el-button type="primary" @click="edit(scope.row, scope.$index, 'edit')">编辑</el-button>
           <el-button type="danger">删除</el-button>
         </template>
       </el-table-column>
@@ -17,7 +25,7 @@
     <el-pagination background layout="prev, pager, next" :page-count="total" class="myOrder-pagination"
     @prev-click="changePage" @next-click="changePage" @current-change="getData"></el-pagination>
 
-    <el-dialog title="添加商品" :visible.sync="dialogFormVisible">
+    <el-dialog :title="title" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="商品名字" :label-width="formLabelWidth">
           <el-input v-model="form.product" autocomplete="off" placeholder="商品名字"></el-input>
@@ -31,10 +39,15 @@
         <el-form-item label="商品库存" :label-width="formLabelWidth">
           <el-input v-model="form.stock" autocomplete="off" placeholder="商品库存"></el-input>
         </el-form-item>
-        <el-form-item label="商品图片" :label-width="formLabelWidth">
-          <img class="manageGoods-avatar-image" :src="form.image" alt="">
-          <imageAdd @updateAvatar="updateAvatar" title="上传图片"></imageAdd>
-        </el-form-item>       
+        <el-form-item label="商品图片" :label-width="formLabelWidth" class="manageGoods-itemAvatar">
+          <div class="manageGoods-avatar-div"><img class="manageGoods-avatar-image" :src="form.image" alt=""></div>
+          <imageAdd @updateAvatar="updateAvatar" title="上传图片" class="manageGoods-avatar-btn"></imageAdd>
+        </el-form-item>    
+         <el-form-item label="商品分类" :label-width="formLabelWidth">
+          <el-select v-model="form.good_types_id" placeholder="商品分类">
+            <el-option :label="item.type" :value="item.id" v-for="(item, index) in typeItem" :key="index"></el-option>
+          </el-select>
+        </el-form-item>   
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -51,6 +64,7 @@
       return{
         tableData: [],
         dialogFormVisible: false,
+        dialogType: 'create',
         btnLoading: false, // 按钮Loading
         page: 1,
         total: 0,
@@ -59,10 +73,14 @@
           price: '',
           stock: '',
           image: '',
-          component: ''
+          component: '',
+          good_types_id: '',
         },
         formLabelWidth: '120px',
-        userInfo: {}
+        userInfo: {},
+        typeItem: [],
+        editIndex: -1,
+        title: ''
       } 
     },
     methods:{
@@ -71,12 +89,28 @@
       },
       submit(){
         if(this.btnLoading) return
+        let url = '';
+        if(this.dialogType === 'create'){
+          url = '/createGoods';
+        }else{
+          url = '/updateGood';
+        }
         let self = this;
         this.btnLoading = true;
-        this.$ajax.post('/createGoods', this.form).then((res)=>{
+        this.form.image = encodeURIComponent(this.form.image);
+        this.$ajax.post(url, this.form).then((res)=>{
           self.btnLoading = false;
           self.dialogFormVisible = false;
-          self.tableData.unshift(self.form);
+          if(this.dialogType === 'create'){
+            res.data.result.image = decodeURIComponent(res.data.result.image);
+            res.data.result.goodType = this.typeItem[Number(res.data.result.good_types_id) - 1].type;
+            res.data.result.add_date = res.data.result.add_date.split(' ')[0] + ' ' + res.data.result.add_date.split(' ')[1];
+            self.tableData.unshift(res.data.result);
+          }else{
+            this.form.image = decodeURIComponent(this.form.image);
+            self.tableData[this.editIndex] = this.form;
+          }
+         
           self.$message({
             showClose: true,
             message: '添加成功',
@@ -103,25 +137,45 @@
           if(res.code === 200){
             res.data.pageinfo.forEach((e)=>{
               e.add_date = e.add_date.split('T')[0]; 
+              e.goodType = this.typeItem[Number(e.good_types_id) - 1].type;
+              if(e.image){
+                e.image = decodeURIComponent(window.atob(e.image))
+              }
             });
             self.tableData = res.data.pageinfo;
             self.page++;
             self.total = res.data.pagenum;
           }
+        }).catch(()=>{
+          self.dialogFormVisible = false;
         })
       },
-      edit(item){
-        this.form = item;
+      edit(item, index, type){
+        if(type === 'edit'){
+          this.title = '修改商品';
+          this.editIndex = index;
+          this.form = item;
+        }else{
+          this.title = '添加商品';
+        }
+        this.dialogType = type;
         this.dialogFormVisible = true;
       },
       changePage(page){
         this.page = page;
         this.getData();
-      }
+      },
+      getType(){
+        let self = this;
+        this.$ajax.get('/goodtypes').then((res)=>{
+          this.typeItem = res.data;
+          self.getData(1);
+        })
+      },
     },
     mounted(){
       this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
-      this.getData();
+      this.getType();
     },
     components: {
       imageAdd
@@ -146,5 +200,14 @@
   .myOrder-pagination{
     text-align: center;
     margin-top: 10px;
+  }
+  .manageGoods-avatar-div{
+    height: 120px;
+    width: 120px;
+    float: left;
+  }
+  .manageGoods-avatar-btn{
+    margin-left: 145px;
+    margin-top: 60px !important;
   }
 </style>

@@ -3,9 +3,9 @@
     <!-- 用户名/ 角色/ 设置权限 -->
     <el-button type="primary" class="manage-add" @click="dialogFormVisible = true">添加成员</el-button>
     <el-table :data="tableData" stripe style="width: 100%" v-loading="isLoading">
-      <el-table-column prop="username" label="用户名" width="120"></el-table-column>
-      <el-table-column prop="role_id" label="角色" width="140"></el-table-column>
-      <el-table-column prop="address" label="操作" type="index" width="240">
+      <el-table-column prop="username" label="用户名" width="200"></el-table-column>
+      <el-table-column prop="role_id" label="角色" width="200"></el-table-column>
+      <el-table-column prop="address" label="操作" type="index" width="400">
         <template slot-scope="scope">
           <el-button type="primary" @click="permission(scope.row, scope.$index)">权限设置</el-button>
           <el-button type="danger" @click="deleteUser(scope.row, scope.$index)">删除</el-button>
@@ -72,8 +72,8 @@ export default {
       page: 1,
       options:[],
       permissionValue: '',
-      permissionRow: {} //点击权限设置当前行信息
-      // total: 
+      permissionRow: {}, //点击权限设置当前行信息
+      userInfo: {}
     }
   },
   methods: {
@@ -84,7 +84,7 @@ export default {
       let self = this;
       this.btnLoading = true;
       this.$ajax.post('/addUser',this.form).then((res)=>{
-        if(res.code === 200){
+        // if(res.code === 200){
           self.btnLoading = false;
           self.tableData.unshift({
             id: res.data.id,
@@ -101,7 +101,7 @@ export default {
           self.form = {};
           console.log(self.tableData);
           // 刷新列表 一个弹出显示显示成功
-        }
+        // }
       }).catch((e)=>{
         self.btnLoading = false;
       })
@@ -115,7 +115,7 @@ export default {
         this.page = page;
       }
       let self = this;
-      this.$ajax.post('/getAllUser', {page: this.page}).then((res)=>{
+      this.$ajax.post('/getAllUser', {page: this.page, user_id: this.userInfo.id}).then((res)=>{
         if(res.code === 200){
           res.data.pageinfo.forEach((e)=>{
             if(e.role_id === 1){
@@ -193,7 +193,7 @@ export default {
       this.$ajax.post('/setRole', {id: this.permissionRow.row.id, role_id: Number(this.permissionValue)})
         .then((res)=>{
           if(res.code === 200){
-            self.tableData[((self.page - 1) * 10) + this.permissionRow.index].role_id = this.permissionValue == 1 ? '店员' : '老板';
+            self.tableData[((self.page - 2) * 10) + this.permissionRow.index].role_id = Number(this.permissionValue) === 1 ? '店员' : '老板';
             self.permissionRow = {};
             self.btnLoading = false;
             self.permissionSetVisible = false;
@@ -210,6 +210,7 @@ export default {
     }
   },
   mounted(){
+    this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
     this.getData();
   }
 }

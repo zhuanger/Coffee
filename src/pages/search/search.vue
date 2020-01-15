@@ -4,6 +4,11 @@
       <good class="good" v-for="(item, index) in goodsItem" :key="index" :item="item" @addGood="addGood"></good>
       <div class="clear"></div>
     </div>
+    
+    
+    <div class="no-result" v-if="goodsItem.length===0">
+      <p>没有找到此类型商品</p>
+    </div>
     <el-pagination background layout="prev, pager, next" :page-count="total" class="search-pagination"
     @prev-click="changePage" @next-click="changePage" @current-change="searchData">
       </el-pagination>
@@ -25,26 +30,30 @@ export default {
   },
   methods: {
     searchData(page){
-      console.log('page', page);
-      let self = this, url;
+      let self = this, url, params = {};
       if(page){
         this.page = page;
       }
       if(this.type === 'hot'){
-        url = '/hotgoods'
+        url = '/hotgoods';
+        params.page = page;
       }else if(this.type === 'new'){
         url = '/newgoods';
+        params.page = page;
+
       }else{
         url = '/selectgood';
+        params.page = page;
+        params.product = this.search;
       }
-      this.$ajax.post(url, {page: page}).then((res)=>{
+      this.$ajax.post(url, params).then((res)=>{
         if(res.code === 200){  
           if(this.type === 'hot'){
             self.goodsItem = res.data.hotinfo;
           }else if(this.type === 'new'){
             self.goodsItem = res.data.newinfo;
           }else{
-            self.goodsItem = '/selectgood';
+            self.goodsItem = res.data.info;
           }      
           self.page++;
           self.total = res.data.pagenum;
@@ -61,6 +70,12 @@ export default {
   },
   created(){
     this.type = this.$route.query.type;
+  },
+  computed: {
+    search(){
+      console.log('this.$route.query.keyword ', this.$route.query.keyword );
+      return this.$route.query.keyword || this.$store.state.search;
+    }
   },
   mounted(){
     this.searchData(1);
@@ -83,5 +98,19 @@ export default {
   }
   .clear{
     clear: both;
+  }
+  .no-result{
+    margin-top: 70px;
+    margin-left: 500px;
+    width: 400px;
+    height: 250px;
+    background-image: url("../../assets/images/ku.png");
+    background-repeat: no-repeat;
+    background-position:center;
+    text-align: center;
+    >p{
+      font-size: 32px;
+
+    }
   }
 </style>
