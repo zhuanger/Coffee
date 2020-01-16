@@ -29,7 +29,7 @@
         <h4>已选商品</h4>
         <div class="order-drawer-top-right">
           <span>总共：<span class="allPrice"><strong>{{totalPrice}}</strong></span></span>
-          <el-button type="primary" @click="balance">去结算</el-button>
+          <el-button type="primary" @click="balance" :loading="isBalance">{{balanceTitle}}</el-button>
         </div>
       </div>
       <cart-good v-for="(item, index) in cartItem" :key="index" :item="item" @deleteItem="deleteItem(index)"
@@ -37,6 +37,12 @@
 
       </cart-good>
     </el-drawer>
+    <div class="order-qrcode" v-if="balanceStatus === 2">
+      <div class="order-qrcode-img">
+        <img :src="qrImg" >
+      </div>
+      <el-button type="primary" class="order-qrcode-btn" @click="hasGiveMoney">已经付款</el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -54,7 +60,12 @@
         total: 0,
         goodsItem: [],
         cartItem: [],
-        totalPrice: 0
+        totalPrice: 0,
+        isBalance: false,
+        userInfo: {},
+        balanceStatus: 1, // 1: 未结算  2: 待付款 3：已经结算  4： 付款失败
+        balanceTitle: '去结算',
+        qrImg: ''
       }
     },
     methods: {
@@ -73,7 +84,7 @@
       },
       getData(page = 1){
         let self = this;
-        this.$ajax.post('/goodtypesinfo', {good_types_id: this.clickActive+1, page: page}).then((res)=>{
+        this.$ajax.post('/goodtypesinfo', {good_types_id: this.clickActive+1, page: page, num: 6}).then((res)=>{
           if(res.code === 200){
             self.goodsItem = res.data.pageinfo;
             self.total = res.data.pagenum;
@@ -103,12 +114,35 @@
         this.$set(this.cartItem[index], 'buyNum', args[0]);
       },
       balance(){
-
+        if(this.isBalance){
+          return;
+        }
+        this.isBalance = true;
+        this.balanceTitle = '计算中...';
+        let self = this, params = {
+          sum_money: this.totalPrice,
+          order_goods: JSON.stringify(this.cartItem),
+          whether_pay: false,
+        };
+        this.$ajax.post('/orders', params).then((res)=>{
+          if(res.code === 200){
+            self.qrImg = decodeURIComponent(window.atob(res.data.balanceImage));
+            self.balanceStatus = 2;
+            self.balanceTitle = '待付款';
+            self.isBalance = false;
+          }
+        })
+      },
+      hasGiveMoney(){
+        
       }
     },
     created(){
       this.getType();
-      this.getData()
+      this.getData();
+    },
+    mounted(){
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
     },
     components: {
       good,
@@ -225,6 +259,33 @@
     }
     &-pagination{
       text-align: center;
+    }
+    &-qrcode{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: absolute;
+      z-index: 2020;
+      width: 300px;
+      height: 335px;
+      background-color: #fff;
+      left: 50%; 
+      top: 50%;
+      margin-top: -165px; 
+      margin-left: -150px; 
+      &-img{
+        width: 100%;
+        height: 280px;
+        >img{
+          width: 100%;
+          height: 100%;
+        }
+      } 
+      &-btn{
+        text-align: center;
+        width: 120px;
+        margin-top: 10px;
+      }
     }
   }
   .no-result{
