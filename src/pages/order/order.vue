@@ -41,13 +41,17 @@
       <div class="order-qrcode-img">
         <img :src="qrImg" >
       </div>
-      <el-button type="primary" class="order-qrcode-btn" @click="hasGiveMoney">已经付款</el-button>
+      <div class="order-qrcode-div">
+        <el-button type="primary" class="order-qrcode-btn" @click="hasGiveMoney">已经付款</el-button>
+        <i class="el-icon-close" @click="closeQrCode"></i>
+      </div>
     </div>
   </div>
 </template>
 <script>
   import good from "@C/good";
   import cartGood from "@C/cart-good";
+  import { mapState } from 'vuex'
   export default {
     data(){
       return{
@@ -59,13 +63,8 @@
         orderType: 1,
         total: 0,
         goodsItem: [],
-        cartItem: [],
         totalPrice: 0,
-        isBalance: false,
         userInfo: {},
-        balanceStatus: 1, // 1: 未结算  2: 待付款 3：已经结算  4： 付款失败
-        balanceTitle: '去结算',
-        qrImg: ''
       }
     },
     methods: {
@@ -97,8 +96,23 @@
       addGood(value){
         this.$set(value, 'buyNum', 1);
         this.cartItem.push(value);
+        this.$store.commit('SET_CARTITEM', this.cartItem);
       },
-      deleteItem(index){
+      isWaitGive(){
+        if(this.balanceTitle === '待付款'){
+          this.$message({
+            showClose: true,
+            message: '此订单已经提交，无法删除物品',
+            type: 'warning'
+          });
+          return ture
+        }
+      },
+      deleteItem(index){  
+        console.log(this.isWaitGive())
+        if(this.isWaitGive()){
+          return
+        } 
         this.cartItem.splice(index, 1);
       },
       gotoTop(){
@@ -111,30 +125,43 @@
         }, 10);
       },
       changeNum(args, index){
+        if(this.isWaitGive()){
+          // 这里要改变 子组件的数字
+          return
+        }
         this.$set(this.cartItem[index], 'buyNum', args[0]);
       },
       balance(){
         if(this.isBalance){
           return;
         }
-        this.isBalance = true;
-        this.balanceTitle = '计算中...';
-        let self = this, params = {
-          sum_money: this.totalPrice,
-          order_goods: JSON.stringify(this.cartItem),
-          whether_pay: false,
-        };
-        this.$ajax.post('/orders', params).then((res)=>{
-          if(res.code === 200){
-            self.qrImg = decodeURIComponent(window.atob(res.data.balanceImage));
-            self.balanceStatus = 2;
-            self.balanceTitle = '待付款';
-            self.isBalance = false;
+        if(this.balanceTitle === '去结算'){
+          this.$store.commit('SET_ISBALANCE', true);
+          this.$store.commit('SET_BALANCETITLE', '计算中...');
+          let self = this, params = {
+            sum_money: this.totalPrice,
+            order_goods: JSON.stringify(this.cartItem),
+            whether_pay: false,
+          };
+          this.$ajax.post('/orders', params).then((res)=>{
+            if(res.code === 200){
+              self.$store.commit('SET_BALANCESTATUS', 2);
+              self.$store.commit('SET_BALANCETITLE', '待付款');
+              self.$store.commit('SET_QRIMG', decodeURIComponent(window.atob(res.data.balanceImage)));
+              self.$store.commit('SET_ISBALANCE', false);
+            }
+          })
+        }else if(this.balanceTitle === '待付款'){
+          if(this.balanceStatus === 1){
+            this.$store.commit('SET_BALANCESTATUS', 2);
           }
-        })
+        }
       },
       hasGiveMoney(){
-        
+
+      },
+      closeQrCode(){
+        this.$store.commit('SET_BALANCESTATUS', 1);
       }
     },
     created(){
@@ -160,7 +187,14 @@
           this.totalPrice = total;
         }
       }
-    }
+    },
+    computed: mapState({
+      cartItem: state => state.cartItem,
+      balanceStatus: state => state.balanceStatus,
+      balanceTitle: state => state.balanceTitle,
+      qrImg: state => state.qrImg,
+      isBalance: state => state.isBalance,
+    })
   }
 </script>
 <style lang="scss" scoped>
@@ -285,6 +319,13 @@
         text-align: center;
         width: 120px;
         margin-top: 10px;
+      }
+      &-div{
+        >i{
+          cursor: pointer;
+          position: relative;
+          left: 60px;
+        }
       }
     }
   }
