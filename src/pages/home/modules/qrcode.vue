@@ -1,10 +1,10 @@
 <template>
   <section class="qrcode">
     <div class="qrcode-img">
-      <img :src="imageUrl" alt="">
+      <img :src="imageUrl" alt="" >
     </div>
-    <imageAdd @updateAvatar="updateAvatar" title="更新二维码" class="qrcode-btn"></imageAdd>
-    <el-button type="primary" class='upload' @click="upload">上传</el-button>
+    <imageAdd @updateAvatar="updateAvatar" title="更新二维码" class="qrcode-btn" @uploadAvatar="upload" 
+    :needChangeText="true" ref="imageAdd"></imageAdd>
   </section>
 </template>
 <script>
@@ -22,13 +22,31 @@
         this.imageUrl = avatar;
       },
       upload(){
-        if(isloading){
+        if(this.isloading){
           return;
         }
-        this.$ajax.post('/uploadqrcode', {}).then(()=>{
-
+        let self = this;
+        this.$ajax.post('/updateQrcode', {id: 1, image: encodeURIComponent(this.imageUrl)}).then((res)=>{
+          if(res.code === 200){
+            self.$message({
+              type: 'success',
+              message: '更新成功!'
+            });
+            self.$refs.imageAdd.upStatus();
+          }
+        })
+      },
+      getCode(){
+        let self = this;
+        this.$ajax.post('/getQrCode').then((res)=>{
+          if(res.code === 200){
+            self.imageUrl = decodeURIComponent(window.atob(res.data[0].image));
+          }
         })
       }
+    },
+    mounted(){
+      this.getCode();
     },
     components: {
       imageAdd
@@ -44,9 +62,12 @@
     align-items: center;
     &-img{
       clear: both;
-      border: 1px solid red;
       width: 250px;
       height: 250px;
+      >img{
+        width: 100%;
+        height: 100%;
+      }
     }
     &-btn{
       margin-right: 9%;
@@ -54,7 +75,7 @@
     }
   }
   .upload{
-    margin-top: 20.2%;
+    margin-top: 22%;
     margin-left: 130px;
     position: absolute;
     display: inline-block;

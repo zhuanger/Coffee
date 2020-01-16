@@ -152,9 +152,9 @@ export default {
             });
           }else{
             self.$message({
-            type: 'success',
-            message: '删除失败!'
-          });
+              type: 'success',
+              message: '删除失败!'
+            });
           }
           
         })
