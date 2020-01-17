@@ -3,7 +3,7 @@
     <h4 class="cartGood-title">{{item.product}}</h4>
     <div class="cartGood-right">
       <span class="cartGood-price">￥{{item.price * num}}</span>
-      <el-input-number v-model="num"  :min="1" :max="100" label="描述文字" size="small"></el-input-number>
+      <el-input-number v-model="num"  :min="1" :max="100" label="描述文字" size="small" :disabled="disabled"></el-input-number>
       <i class="el-icon-close cartGood-close" @click="deleteGood"></i>
     </div>
   </section>
@@ -15,7 +15,8 @@ export default {
   },
   data(){
     return{
-      num: 1
+      num: 1,
+      disabled: false
     }
   },
   methods: {
@@ -24,8 +25,8 @@ export default {
     }
   },
   watch: {
-    num(n){
-      this.$emit('changeNum', n);
+    num(n, o){
+      this.$emit('changeNum', n, o);
     }
   }
 }

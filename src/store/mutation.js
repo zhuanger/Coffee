@@ -19,6 +19,9 @@ const mutations = {
   },
   SET_ISBALANCE(state, payload){
     state.isBalance = payload;
+  },
+  SET_ORDERID(state, payload){
+    state.orderId = payload;
   }
 }
 export default mutations

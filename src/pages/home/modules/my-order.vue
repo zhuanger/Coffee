@@ -3,13 +3,23 @@
     <!-- 时间 商品名字数量 价格 状态 图片 -->
     <div class="">
       <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="date" label="日期" width="120"></el-table-column>
-        <el-table-column prop="name" label="图片" width="140"></el-table-column>
-        <el-table-column prop="address" label="状态" width="80"></el-table-column>
-        <el-table-column prop="address" label="商品名字"></el-table-column>
-        <el-table-column prop="address" label="总价格" width="100"></el-table-column>
+        <el-table-column prop="create_time" label="日期" width="120"></el-table-column>
+        <!-- <el-table-column prop="name" label="图片" width="140"></el-table-column> -->
+        <el-table-column prop="payStatus" label="状态" width="120"></el-table-column>
+        <el-table-column label="商品名字">
+          <template slot-scope="scope">
+          <!-- <i class="el-icon-time"></i>-->
+          <!-- <span style="margin-left: 10px">{{ scope.row }}</span>  -->
+          
+            <!-- <img :src="scope.row.image" alt="" style="width: 140px;"> -->
+            <div >
+              <p v-for="(item, index) in scope.row.order_goods" :key="index">{{item.product + '   x' + item.sell_num}}</p>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="sum_money" label="总价格" width="100"></el-table-column>
       </el-table>
-      <el-pagination background layout="prev, pager, next" :total="total" class="myOrder-pagination"
+      <el-pagination background layout="prev, pager, next" :page-count="total" class="myOrder-pagination"
       @prev-click="changePage" @next-click="changePage" @current-change="getData"></el-pagination>
     </div>
   </section>
@@ -21,6 +31,7 @@ export default {
       tableData: [],
       total: 0,
       userInfo: {},
+      page: 1
     }
   },
   methods: {
@@ -33,16 +44,20 @@ export default {
         user_id: this.userInfo.id,
         page: this.page
       }).then((res)=>{
-        console.log('res', res);
         if(res.code === 200){
+          res.data.pageinfo.forEach((item)=>{
+            item.payStatus = item.whether_pay === 'False' ? '未付款' : '已经付款';
+            item.order_goods = JSON.parse(item.order_goods);
+          })
           self.tableData = res.data.pageinfo;
           self.total = res.data.pagenum;
           self.page++;
         }
       })
     },
-    changePage(){
-
+    changePage(page){
+      this.page = page;
+      this.getData();
     }
   },
   mounted(){

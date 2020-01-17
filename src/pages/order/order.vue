@@ -33,7 +33,7 @@
         </div>
       </div>
       <cart-good v-for="(item, index) in cartItem" :key="index" :item="item" @deleteItem="deleteItem(index)"
-       @changeNum="changeNum(arguments, index)">
+       @changeNum="changeNum(arguments, index)" ref="cartGood">
 
       </cart-good>
     </el-drawer>
@@ -42,7 +42,7 @@
         <img :src="qrImg" >
       </div>
       <div class="order-qrcode-div">
-        <el-button type="primary" class="order-qrcode-btn" @click="hasGiveMoney">已经付款</el-button>
+        <el-button type="primary" class="order-qrcode-btn" @click="hasGiveMoney" :loading="isSurePay">确定付款</el-button>
         <i class="el-icon-close" @click="closeQrCode"></i>
       </div>
     </div>
@@ -65,6 +65,7 @@
         goodsItem: [],
         totalPrice: 0,
         userInfo: {},
+        isSurePay: false
       }
     },
     methods: {
@@ -94,23 +95,25 @@
         this.getData(page)
       },
       addGood(value){
+        if(this.isWaitGive('此订单已经提交，无法添加物品')){      
+          return
+        } 
         this.$set(value, 'buyNum', 1);
         this.cartItem.push(value);
         this.$store.commit('SET_CARTITEM', this.cartItem);
       },
-      isWaitGive(){
+      isWaitGive(text){
         if(this.balanceTitle === '待付款'){
           this.$message({
             showClose: true,
-            message: '此订单已经提交，无法删除物品',
+            message: text,
             type: 'warning'
           });
-          return ture
+          return true
         }
       },
       deleteItem(index){  
-        console.log(this.isWaitGive())
-        if(this.isWaitGive()){
+        if(this.isWaitGive('此订单已经提交，无法删除物品')){      
           return
         } 
         this.cartItem.splice(index, 1);
@@ -125,8 +128,7 @@
         }, 10);
       },
       changeNum(args, index){
-        if(this.isWaitGive()){
-          // 这里要改变 子组件的数字
+        if(this.isWaitGive('此订单已经提交，无法添加或减少物品')){
           return
         }
         this.$set(this.cartItem[index], 'buyNum', args[0]);
@@ -142,13 +144,18 @@
             sum_money: this.totalPrice,
             order_goods: JSON.stringify(this.cartItem),
             whether_pay: false,
+            user_id: this.userInfo.id
           };
           this.$ajax.post('/orders', params).then((res)=>{
             if(res.code === 200){
+              self.$store.commit('SET_ORDERID', res.data.id);
               self.$store.commit('SET_BALANCESTATUS', 2);
               self.$store.commit('SET_BALANCETITLE', '待付款');
               self.$store.commit('SET_QRIMG', decodeURIComponent(window.atob(res.data.balanceImage)));
               self.$store.commit('SET_ISBALANCE', false);
+              self.$refs.cartGood.forEach((item)=>{
+                item.disabled = true;
+              })
             }
           })
         }else if(this.balanceTitle === '待付款'){
@@ -158,7 +165,35 @@
         }
       },
       hasGiveMoney(){
-
+        if(this.isSurePay){
+          return
+        }
+        this.isSurePay = true;
+        let self = this;
+        this.$ajax.post('/updatepaystatus', {order_id: this.orderId}).then((res)=>{
+          if(res.code === 200){
+            self.$store.commit('SET_ORDERID', res.data.id);
+            self.$store.commit('SET_BALANCESTATUS', 1);
+            self.$store.commit('SET_BALANCETITLE', '去结算');
+            self.$store.commit('SET_CARTITEM', []);
+            self.drawer = false;
+            self.$message({
+              showClose: true,
+              message: '付款成功',
+              type: 'success'
+            });
+            self.isSurePay = false;
+            // self.$store.commit('SET_QRIMG', decodeURIComponent(window.atob(res.data.balanceImage)));
+            // self.$store.commit('SET_ISBALANCE', false);
+          }
+        }).catch((e)=>{
+          self.isSurePay = false;
+          self.$message({
+            showClose: true,
+            message: '服务器出错',
+            type: 'error'
+          });
+        })
       },
       closeQrCode(){
         this.$store.commit('SET_BALANCESTATUS', 1);
@@ -194,6 +229,7 @@
       balanceTitle: state => state.balanceTitle,
       qrImg: state => state.qrImg,
       isBalance: state => state.isBalance,
+      orderId: state => state.orderId
     })
   }
 </script>
