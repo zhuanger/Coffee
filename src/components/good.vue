@@ -1,6 +1,6 @@
 <template>
   <div class="good">
-    <img src="@A/images/testImage.jpg" alt="" class="good-img">
+    <img :src="item.image" alt="" class="good-img">
     <div class="good-text">
       <span class="money">￥{{item.price}}元</span>
       <p class="good-text-title">{{item.product}}</p>
@@ -25,6 +25,9 @@ export default {
     addGood(){
       this.$emit('addGood', this.item);
     }
+  },
+  mounted(){
+    console.log(this.item);
   }
 }
 </script>

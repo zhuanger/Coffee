@@ -86,6 +86,9 @@
         let self = this;
         this.$ajax.post('/goodtypesinfo', {good_types_id: this.clickActive+1, page: page, num: 6}).then((res)=>{
           if(res.code === 200){
+            res.data.pageinfo.forEach((e)=>{
+              e.image = decodeURIComponent(window.atob(e.image));
+            });
             self.goodsItem = res.data.pageinfo;
             self.total = res.data.pagenum;
           }

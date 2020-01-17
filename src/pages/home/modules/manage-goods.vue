@@ -139,7 +139,7 @@
               e.add_date = e.add_date.split('T')[0]; 
               e.goodType = this.typeItem[Number(e.good_types_id) - 1].type;
               if(e.image){
-                e.image = decodeURIComponent(window.atob(e.image))
+                e.image = decodeURIComponent(window.atob(e.image));
               }
             });
             self.tableData = res.data.pageinfo;
