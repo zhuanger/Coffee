@@ -92,8 +92,14 @@
         }).then((res)=>{
           if(res.code === 200){
             if(type === 0){
+              res.data.hotinfo.forEach((e)=>{
+                e.image = decodeURIComponent(window.atob(e.image));
+              });
               self.hotItem = res.data.hotinfo;
             }else if(type === 1){
+              res.data.newinfo.forEach((e)=>{
+                e.image = decodeURIComponent(window.atob(e.image));
+              });
               self.newItem = res.data.newinfo;
             }         
           }

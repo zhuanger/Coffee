@@ -1,4 +1,6 @@
 import Index from "@P/index/index"
+import PageOne from "@P/index/page-one"
+import PageTwo from "@P/index/page-two"
 import Detail from "@P/index/detail"
 import About from "@P/about/about"
 import Activity from "@P/activity/activity"
@@ -18,5 +20,6 @@ let route = [
   {path: '/order', component: Order, name: 'order'},
   {path: '/search', component: Search, name: 'search'},
   {path: '/page', component: Page, name: 'page'},
+  {path: '/pageTwo', component: PageTwo, name: 'PageTwo'},
 ]
 export default route  

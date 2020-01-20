@@ -1,7 +1,7 @@
 <template>
   <el-carousel :interval="4000" :type="type" :height="height" class="swiper">
     <el-carousel-item v-for="(item,index) in imageItem" :key="index">
-      <img :src="item" alt="" class="swiper-img">
+      <img :src="item" alt="" class="swiper-img" @click="gotoPage(index)">
     </el-carousel-item>
   </el-carousel>
 </template>
@@ -16,6 +16,12 @@
         default: window.innerHeight + 'px'
       }
     },
+    methods: {
+      gotoPage(index){
+        let name = ['/pageOne', '/pageTwo'];
+        this.$router.push({path: name[index]});
+      }
+    }
   }
 </script>
 <style lang="scss">
