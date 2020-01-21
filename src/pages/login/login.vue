@@ -16,7 +16,7 @@
         <el-input placeholder="您的密码" v-model="password" clearable show-password maxlength="13" class="login-container-input"></el-input>          
         <span for="">{{errPasswordText}}</span>
       </div>
-      <a href="#" class="login-container-a">忘记密码</a>
+      <!-- <a href="#" class="login-container-a">忘记密码</a> -->
       <el-button type="primary" class="login-container-button" @click="login" v-loading.fullscreen.lock="fullscreenLoading">登录</el-button>
     </div>
   </div>
