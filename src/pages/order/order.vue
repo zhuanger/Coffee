@@ -140,6 +140,7 @@
         if(this.isBalance){
           return;
         }
+
         if(this.balanceTitle === '去结算'){
           this.$store.commit('SET_ISBALANCE', true);
           this.$store.commit('SET_BALANCETITLE', '计算中...');

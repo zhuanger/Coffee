@@ -49,10 +49,19 @@ export default {
       this.$ajax.post(url, params).then((res)=>{
         if(res.code === 200){  
           if(this.type === 'hot'){
+            res.data.hotinfo.forEach((e)=>{
+              e.image = decodeURIComponent(window.atob(e.image));
+            });
             self.goodsItem = res.data.hotinfo;
           }else if(this.type === 'new'){
+            res.data.newinfo.forEach((e)=>{
+              e.image = decodeURIComponent(window.atob(e.image));
+            });
             self.goodsItem = res.data.newinfo;
           }else{
+            res.data.info.forEach((e)=>{
+              e.image = decodeURIComponent(window.atob(e.image));
+            });
             self.goodsItem = res.data.info;
           }      
           self.page++;

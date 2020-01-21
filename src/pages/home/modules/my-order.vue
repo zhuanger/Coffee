@@ -1,19 +1,14 @@
 <template>
   <section class="myOrder">
-    <!-- 时间 商品名字数量 价格 状态 图片 -->
+    <!-- 时间 商品名字数量 价格 状态  -->
     <div class="">
       <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="create_time" label="日期" width="120"></el-table-column>
-        <!-- <el-table-column prop="name" label="图片" width="140"></el-table-column> -->
+        <el-table-column prop="create_time" label="日期" width="160"></el-table-column>
         <el-table-column prop="payStatus" label="状态" width="120"></el-table-column>
         <el-table-column label="商品名字">
           <template slot-scope="scope">
-          <!-- <i class="el-icon-time"></i>-->
-          <!-- <span style="margin-left: 10px">{{ scope.row }}</span>  -->
-          
-            <!-- <img :src="scope.row.image" alt="" style="width: 140px;"> -->
             <div >
-              <p v-for="(item, index) in scope.row.order_goods" :key="index">{{item.product + '   x' + item.sell_num}}</p>
+              <p v-for="(item, index) in scope.row.order_goods" :key="index">{{item.product + '   x' + item.buyNum}}</p>
             </div>
           </template>
         </el-table-column>
