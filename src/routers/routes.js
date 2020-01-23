@@ -20,6 +20,7 @@ let route = [
   {path: '/order', component: Order, name: 'order'},
   {path: '/search', component: Search, name: 'search'},
   {path: '/page', component: Page, name: 'page'},
-  {path: '/pageTwo', component: PageTwo, name: 'PageTwo'},
+  {path: '/pageOne', component: PageOne, name: 'pageOne'},
+  {path: '/pageTwo', component: PageTwo, name: 'PpageTwo'},
 ]
 export default route  
