@@ -18,7 +18,7 @@
       <el-table-column prop="address" label="操作" >
         <template slot-scope="scope">
           <el-button type="primary" @click="edit(scope.row, scope.$index, 'edit')">编辑</el-button>
-          <el-button type="danger">删除</el-button>
+          <el-button type="danger" @click="deleteGood(scope.row, scope.$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -192,7 +192,6 @@
               }
             });
             self.tableData = res.data.pageinfo;
-            self.page++;
             self.total = res.data.pagenum;
           }
         }).catch(()=>{
@@ -221,6 +220,41 @@
           self.getData(1);
         })
       },
+      deleteGood(row, index){
+        let self = this;
+        console.log('row', row);
+        console.log('index', index);
+        this.$confirm('确定要删除此商品吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          self.$ajax.post('/deletegoods', {
+            id: row.id
+          }).then((res)=>{
+            if(res.code === 200){
+              self.tableData.splice(((self.page - 1) * 10) + index, 1);
+              self.total--;
+              self.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+            }else{
+              self.$message({
+                type: 'success',
+                message: '删除失败!'
+              });
+            }
+            
+          })
+          
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+      }
     },
     mounted(){
       this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
