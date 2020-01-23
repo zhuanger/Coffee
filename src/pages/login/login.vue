@@ -69,9 +69,13 @@
             }, 2000);
           }else{
             // 提示错误
-            this.errUsernameText = res.msg;
+            if(res.code === 202){
+              self.errPasswordText = res.msg;
+            }else{
+              self.errUsernameText = res.msg;
+            }     
+            self.fullscreenLoading = false;
             setTimeout(() => {
-              self.fullscreenLoading = false;
               self.hideErrText(res.code === 201 ? 'username':'password');
             }, 1500);
           }

@@ -59,6 +59,7 @@
 </template>
 <script>
   import imageAdd from '@C/imageAdd';
+  import {trim} from "@A/js/util";
   export default {
     data(){
       return{
@@ -94,6 +95,9 @@
           url = '/createGoods';
         }else{
           url = '/updateGood';
+        } 
+        if(!this.verify()){
+          return
         }
         let self = this;
         this.btnLoading = true;
@@ -125,6 +129,51 @@
             type: 'warm'
           });
         })
+      },
+      verify(){
+        if(trim(this.form.product).length === 0){
+          this.$message({
+            type: 'warning',
+            message: '请输入正确的商品名字'
+          });
+          return false
+        }
+         if(!Number(this.form.price)){
+          this.$message({
+            type: 'warning',
+            message: '请输入正确的价格'
+          });
+          return false
+        }
+        if(trim(this.form.component).length === 0){
+          this.$message({
+            type: 'warning',
+            message: '请输入正确的商品组成成分'
+          });
+          return false
+        }
+        if(!Number(this.form.stock)){
+          this.$message({
+            type: 'warning',
+            message: '请输入正确的库存'
+          });
+          return false
+        }
+        if(this.form.image.length === 0){
+          this.$message({
+            type: 'warning',
+            message: '请上传图片'
+          });
+          return false
+        }
+        if(String(this.form.good_types_id).length === 0){
+          this.$message({
+            type: 'warning',
+            message: '请选择分类'
+          });
+          return false
+        }
+        return true
       },
       getData(page){
         let self = this; 

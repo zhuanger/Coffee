@@ -25,7 +25,10 @@
         if(this.avatarLoading) return;
         if(this.status === 1){
           let reader = new FileReader(), self = this, file = e.target.files[0];
-          this.avatarLoading = true;
+          if(!file){
+            return 
+          }
+          this.avatarLoading = true;          
           if(file.size > (1024 * 12)){
             this.$message({
               showClose: true,
@@ -53,9 +56,8 @@
             });
           }
         }else if(this.status === 2){
-          let self = this;
-          self.avatarLoading = true;
-          self.$emit('uploadAvatar');
+          this.avatarLoading = true;
+          this.$emit('uploadAvatar');
         }
       },
       upStatus(){

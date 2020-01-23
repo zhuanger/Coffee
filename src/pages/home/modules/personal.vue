@@ -58,6 +58,16 @@ export default {
     submit(){
       let self = this;
       if(this.btnLoading) return;
+      if(this.form.userName.length === 0){
+        this.$alert('你没输入用户名', '警告', {
+          confirmButtonText: '确定',
+          type: 'error',
+          callback: action => {
+            
+          }
+        });
+        return
+      }
       this.btnLoading = true;
       this.$ajax.post('/updateUserInfo', {
         id: this.userInfo.id,
@@ -96,6 +106,13 @@ export default {
   },
   components: {
     imageAdd
+  },
+  watch:{
+    dialogFormVisible(n,o){
+      if(n){
+        this.form.userName = this.userInfo.username;
+      }
+    }
   }
 }
 </script>

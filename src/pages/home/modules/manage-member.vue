@@ -52,6 +52,7 @@
   </section>
 </template>
 <script>
+import {trim} from "@A/js/util";
 export default {
   data(){
     return{
@@ -81,6 +82,22 @@ export default {
       if(this.btnLoading){
         return
       }
+      if(trim(this.form.username).length === 0){
+        this.$message({
+          showClose: true,
+          message: '用户名不能为空',
+          type: 'warning'
+        });
+        return
+      }
+       if(trim(this.form.password).length === 0){
+        this.$message({
+          showClose: true,
+          message: '密码不能为空',
+          type: 'warning'
+        });
+        return
+      }
       let self = this;
       this.btnLoading = true;
       this.$ajax.post('/addUser',this.form).then((res)=>{
@@ -99,7 +116,6 @@ export default {
           });
           self.dialogFormVisible = false;
           self.form = {};
-          console.log(self.tableData);
           // 刷新列表 一个弹出显示显示成功
         // }
       }).catch((e)=>{
@@ -126,7 +142,6 @@ export default {
           });
           self.tableData = res.data.pageinfo;
           self.total = res.data.pagenum;
-          self.page ++;
           self.isLoading = false;
         }
       }).catch((e)=>{
@@ -188,6 +203,14 @@ export default {
       if(this.btnLoading){
         return
       }
+      let _permissionValue = this.permissionValue + "";
+      if(_permissionValue.length === 0){
+        this.$message({
+          type: 'warning',
+          message: '请选择权限'
+        });
+        return
+      }
       this.btnLoading = true;
       let self = this;
       this.$ajax.post('/setRole', {id: this.permissionRow.row.id, role_id: Number(this.permissionValue)})
@@ -212,6 +235,13 @@ export default {
   mounted(){
     this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
     this.getData();
+  },
+  watch: {
+    dialogFormVisible(n, o){
+      if(!n){
+        this.form = {};
+      }
+    }
   }
 }
 </script>
