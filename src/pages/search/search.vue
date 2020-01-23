@@ -70,7 +70,9 @@ export default {
       })
     },
     addGood(value){
-      
+      console.log(value);
+      this.$set(value, 'buyNum', 1);
+      this.$router.push({path: '/order', query: {item: JSON.stringify(value)}})
     },
     changePage(page){
       this.page = page;

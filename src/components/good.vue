@@ -26,9 +26,6 @@ export default {
       this.$emit('addGood', this.item);
     }
   },
-  mounted(){
-    console.log(this.item);
-  }
 }
 </script>
 <style lang="scss" scoped>

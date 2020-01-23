@@ -119,7 +119,9 @@
         if(this.isWaitGive('此订单已经提交，无法删除物品')){      
           return
         } 
+        
         this.cartItem.splice(index, 1);
+        this.$store.commit('SET_CARTITEM', this.cartItem);
       },
       gotoTop(){
         let htmlDom = document.querySelector('html');
@@ -135,6 +137,7 @@
           return
         }
         this.$set(this.cartItem[index], 'buyNum', args[0]);
+        
       },
       balance(){
         if(this.isBalance){
@@ -204,10 +207,17 @@
       }
     },
     created(){
+      if(this.$route.query.item){
+        let item = JSON.parse(this.$route.query.item);
+        this.clickActive = item.good_types_id - 1;
+        this.cartItem.push(item);
+        this.$store.commit('SET_CARTITEM', this.cartItem);
+      }
       this.getType();
       this.getData();
     },
     mounted(){
+      
       this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
     },
     components: {
@@ -220,9 +230,12 @@
         immediate: true,
         handler(n){
           let total = 0;
+          console.log('n', n);
           n.forEach((e, index)=>{          
             total = total + (Number(e.price) * Number(e.buyNum));
           })
+          console.log('total', total);
+
           this.totalPrice = total;
         }
       }
