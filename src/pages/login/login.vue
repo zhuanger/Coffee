@@ -58,6 +58,7 @@
             let userInfo = {
               role_id: res.data.role_id,
               username: self.username,
+              password: self.password,
               avatar: decodeURIComponent(window.atob(res.data.avatar)),
               id: res.data.id
             }

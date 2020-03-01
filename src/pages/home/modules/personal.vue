@@ -26,6 +26,9 @@
         <el-form-item label="用户名" class="personal-dialog-username">
           <el-input v-model="form.userName" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="密码" class="">
+          <el-input v-model="form.password" autocomplete="off"></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -44,16 +47,18 @@ export default {
       form: {
         avatar: '',
         userName: '',
+        password: ''
       },
       userInfo:{},
       avatarLoading: false,
-      isUpdateAvatar: true,
+      isUpdateAvatar: false,
       btnLoading: false
     }
   },
   methods: {
     updateAvatar(avatar){
       this.form.avatar =  avatar;
+      this.isUpdateAvatar = true;
     },
     submit(){
       let self = this;
@@ -68,11 +73,25 @@ export default {
         });
         return
       }
+      if(this.form.password.length === 0){
+        this.$alert('你没输入密码', '警告', {
+          confirmButtonText: '确定',
+          type: 'error',
+          callback: action => {
+            
+          }
+        });
+        return
+      }
       this.btnLoading = true;
+      let params = {
+        id: this.userInfo.id,
+      }
       this.$ajax.post('/updateUserInfo', {
         id: this.userInfo.id,
         avatar: this.form.avatar.length === 0 ? encodeURIComponent(this.userInfo.avatar) : encodeURIComponent(this.form.avatar),
-        username: this.form.avatar.length === 0 ? this.userInfo.username : this.form.userName
+        username: this.form.userName.length === 0 ? this.userInfo.username : this.form.userName,
+        password: this.form.password.length === 0 ? this.userInfo.password : this.form.password,
       }).then((res)=>{
         if(res.code === 200){
           self.$message({
@@ -81,8 +100,23 @@ export default {
             type: 'success'
           });
           self.btnLoading = false;
-          localStorage.removeItem('userInfo');
-          self.$router.push({name: 'login'});
+          console.log(self.form.password);
+          console.log(self.userInfo.password);
+          if(self.form.password != self.userInfo.password){
+            localStorage.removeItem('userInfo');
+            self.$router.push({name: 'login'});
+          }else{
+            let userInfo = {
+              role_id: self.userInfo.role_id,
+              username: self.form.userName.length === 0 ? self.userInfo.username : self.form.userName,
+              avatar: self.form.avatar,
+              id: self.userInfo.id,
+              password: self.userInfo.password
+            }
+            self.userInfo = userInfo;
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            self.dialogFormVisible = false;
+          }
         }else{
           self.btnLoading = false;
         }
@@ -111,6 +145,8 @@ export default {
     dialogFormVisible(n,o){
       if(n){
         this.form.userName = this.userInfo.username;
+        console.log('this.userInfo.password', this.userInfo)
+        this.form.password = this.userInfo.password;
       }
     }
   }

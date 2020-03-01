@@ -202,7 +202,8 @@
         if(type === 'edit'){
           this.title = '修改商品';
           this.editIndex = index;
-          this.form = Object.assign({},item);
+          // this.form = Object.assign({},item);
+          this.form = this.deepCopy(item);
         }else{
           this.title = '添加商品';
         }
@@ -218,7 +219,7 @@
           if(Object.prototype.toString.call(object[key]) !== '[object Object]'){
             _obj[key] = object[key];
           }else{
-            this.deepCopy(object[key]);
+            _obj[key] = this.deepCopy(object[key]);
           }
         }
         return _obj
