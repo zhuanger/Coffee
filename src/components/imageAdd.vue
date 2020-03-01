@@ -29,12 +29,13 @@
             return 
           }
           this.avatarLoading = true;          
-          if(file.size > (1024 * 12)){
+          if(file.size > (1024 * 1200)){
             this.$message({
               showClose: true,
               message: '图片不能超过12kb，无法上传',
               type: 'warning'
             });
+            this.avatarLoading = false;
             return
           }
           reader.readAsDataURL(file); 

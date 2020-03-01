@@ -202,12 +202,26 @@
         if(type === 'edit'){
           this.title = '修改商品';
           this.editIndex = index;
-          this.form = item;
+          this.form = Object.assign({},item);
         }else{
           this.title = '添加商品';
         }
         this.dialogType = type;
         this.dialogFormVisible = true;
+      },
+      deepCopy(object){
+        if(Object.prototype.toString.call(object) !== '[object Object]'){
+          return
+        }
+        let _obj = Object.create(object);
+        for(let key in object){
+          if(Object.prototype.toString.call(object[key]) !== '[object Object]'){
+            _obj[key] = object[key];
+          }else{
+            this.deepCopy(object[key]);
+          }
+        }
+        return _obj
       },
       changePage(page){
         this.page = page;
