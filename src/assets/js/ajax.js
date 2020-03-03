@@ -5,11 +5,13 @@ const ajax = Axios.create({
   baseURL: 'http://127.0.0.1:3000',
   transformRequest: [function (data) {
     return Qs.stringify(data)
+
   }],
-  headers: {'Content-Type':'application/x-www-form-urlencoded'},
+  // headers: {'Content-Type':'application/x-www-form-urlencoded'},
   validateStatus: (status)=>{
     return status >= 200 && status < 300; 
-  }
+  },
+  
 })
 // 添加请求拦截器
 ajax.interceptors.request.use((config)=>{

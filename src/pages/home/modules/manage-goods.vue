@@ -111,8 +111,8 @@
             res.data.result.add_date = res.data.result.add_date.split(' ')[0] + ' ' + res.data.result.add_date.split(' ')[1];
             self.tableData.unshift(res.data.result);
           }else{
-            this.form.image = decodeURIComponent(this.form.image);
-            self.tableData[this.editIndex] = this.form;
+            self.form.image = decodeURIComponent(self.form.image);
+            self.$set(self.tableData,self.editIndex, self.form)
           }
          
           self.$message({
@@ -202,8 +202,7 @@
         if(type === 'edit'){
           this.title = '修改商品';
           this.editIndex = index;
-          // this.form = Object.assign({},item);
-          this.form = this.deepCopy(item);
+          this.form = Object.assign({},item);
         }else{
           this.title = '添加商品';
         }
@@ -214,7 +213,7 @@
         if(Object.prototype.toString.call(object) !== '[object Object]'){
           return
         }
-        let _obj = Object.create(object);
+        let _obj = {};
         for(let key in object){
           if(Object.prototype.toString.call(object[key]) !== '[object Object]'){
             _obj[key] = object[key];
@@ -237,8 +236,6 @@
       },
       deleteGood(row, index){
         let self = this;
-        console.log('row', row);
-        console.log('index', index);
         this.$confirm('确定要删除此商品吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
