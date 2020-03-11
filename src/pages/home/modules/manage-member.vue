@@ -139,6 +139,9 @@ export default {
             }else if(e.role_id === 2){
               e.role_id = '老板';
             }
+            if(e.avatar){
+              e.avatar = decodeURIComponent(window.atob(e.avatar));
+            }
           });
           self.tableData = res.data.pageinfo;
           self.total = res.data.pagenum;
