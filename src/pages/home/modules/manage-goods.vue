@@ -2,11 +2,13 @@
   <section class="manageGoods">
     <!-- 商品 价格 上架时间 操作：删除。修改 -->
     <el-button type="primary" class="manage-add" @click="edit('1', '1', 'create')">添加商品</el-button>
-    <el-table :data="tableData" stripe style="width: 100%">
+    <el-table :data="tableData" stripe style="width: 100%" @sort-change="sortBy">
       <el-table-column prop="product" label="名字" width="120"></el-table-column>
       <el-table-column prop="price" label="价格" width="140"></el-table-column>
       <el-table-column prop="add_date" label="上架时间" width="140"></el-table-column>
       <el-table-column prop="goodType" label="商品分类" width="140"></el-table-column>
+      <el-table-column prop="stock" label="库存" width="80" sortable="custom"></el-table-column>
+      <el-table-column prop="sell_num" label="销售量" width="100" sortable="custom" ></el-table-column>
       <el-table-column label="商品图片" width="200">
         <template slot-scope="scope">
           <!-- <i class="el-icon-time"></i>-->
@@ -175,13 +177,14 @@
         }
         return true
       },
-      getData(page){
+      getData(page, sortBy = ['id', 'DESC']){
         let self = this; 
         if(page){
           this.page = page;
         }
         this.$ajax.post('/allGoods', {
-          page: this.page
+          page: this.page,
+          sortBy: JSON.stringify(sortBy)
         }).then((res)=>{
           if(res.code === 200){
             res.data.pageinfo.forEach((e)=>{
@@ -266,6 +269,11 @@
             message: '已取消删除'
           });          
         });
+      },
+      sortBy(row){
+        let sortBy = row.order === "descending" ? 'DESC' : 'ASC';
+        this.getData(1, [row.prop, sortBy]);
+
       }
     },
     mounted(){

@@ -10,7 +10,7 @@
       <el-input  class="header-search" placeholder="请输入搜索内容" prefix-icon="el-icon-search" v-model="search" v-on:keyup.enter.native="searchClick"></el-input>
       
       <el-menu-item index="5" class="el-menu-login" :route="hasLogin ? '/home' : '/login'"
-       >{{hasLogin ? '个人中心' : '登陆'}}</el-menu-item>
+       >{{hasLogin ? `欢迎 ${userInfo.username}` : '登陆'}}</el-menu-item>
     </el-menu>
     <div class="line"></div>
   </header>
@@ -29,10 +29,17 @@
       },
       searchClick(){
         this.$router.push({path: '/search', query: {keyword: this.search}})
-      },    },
+      },    
+    },
     data(){
       return{
+        userInfo: {
+          username: ''
+        }
       }
+    },
+    mounted(){
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
     },
     computed: {
       activeIndex: {
