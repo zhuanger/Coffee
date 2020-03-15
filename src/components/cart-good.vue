@@ -12,6 +12,9 @@
 export default {
   props: {
     item: {},
+    buyNum: {
+      default: 1
+    }
   },
   data(){
     return{
@@ -24,10 +27,16 @@ export default {
       this.$emit('deleteItem');
     }
   },
+  mounted(){
+    this.num = this.buyNum;
+  },
   watch: {
     num(n, o){
       this.$emit('changeNum', n, o);
-    }
+    },
+    buyNum(n, o){
+      this.num = n;
+    },
   }
 }
 </script>

@@ -32,7 +32,7 @@
           <el-button type="primary" @click="balance" :loading="isBalance">{{balanceTitle}}</el-button>
         </div>
       </div>
-      <cart-good v-for="(item, index) in cartItem" :key="index" :item="item" @deleteItem="deleteItem(index)"
+      <cart-good v-for="(item, index) in cartItem" :key="index" :item="item" :buyNum="item.buyNum" @deleteItem="deleteItem(index)"
        @changeNum="changeNum(arguments, index)" ref="cartGood">
 
       </cart-good>
@@ -75,7 +75,6 @@
         this.getData();
       },
       handleChange(value) {
-        console.log(value);
       },
       getType(){
         this.$ajax.get('/goodtypes').then((res)=>{
@@ -101,9 +100,21 @@
         if(this.isWaitGive('此订单已经提交，无法添加物品')){      
           return
         } 
-        this.$set(value, 'buyNum', 1);
-        this.cartItem.push(value);
-        this.$store.commit('SET_CARTITEM', this.cartItem);
+        this.$set(value, 'buyNum', value.buyNum ? value.buyNum + 1 : 1);
+        let hasCart = false, _cartItem = this.cartItem.map((item)=>{
+          return item
+        });
+        for(let i = 0; i < _cartItem.length; i++){
+          if(_cartItem[i] && _cartItem[i].id === value.id){
+            _cartItem[i] = value;
+            hasCart = true;
+            break
+          }
+        }
+        if(!hasCart){
+          _cartItem.push(value);  
+        }
+        this.$store.commit('SET_CARTITEM', _cartItem);
       },
       isWaitGive(text){
         if(this.balanceTitle === '待付款'){
@@ -230,12 +241,9 @@
         immediate: true,
         handler(n){
           let total = 0;
-          console.log('n', n);
           n.forEach((e, index)=>{          
             total = total + (Number(e.price) * Number(e.buyNum));
           })
-          console.log('total', total);
-
           this.totalPrice = total;
         }
       }
