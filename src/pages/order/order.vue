@@ -201,6 +201,7 @@
               type: 'success'
             });
             self.isSurePay = false;
+            window.location.reload();
             // self.$store.commit('SET_QRIMG', decodeURIComponent(window.atob(res.data.balanceImage)));
             // self.$store.commit('SET_ISBALANCE', false);
           }
