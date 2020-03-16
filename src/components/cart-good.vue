@@ -24,6 +24,7 @@ export default {
   },
   methods: {
     deleteGood(){
+      this.item.buyNum = 0;
       this.$emit('deleteItem');
     }
   },

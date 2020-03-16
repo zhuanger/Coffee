@@ -100,8 +100,6 @@ export default {
             type: 'success'
           });
           self.btnLoading = false;
-          console.log(self.form.password);
-          console.log(self.userInfo.password);
           if(self.form.password != self.userInfo.password){
             localStorage.removeItem('userInfo');
             self.$router.push({name: 'login'});

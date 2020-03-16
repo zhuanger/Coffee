@@ -20,7 +20,8 @@
     </div>
     <div class="order-ope">
       <button class="order-ope-cart button" @click="drawer = true">
-        <i class="num" v-if="cartItem.length!==0">{{cartItem.length === 0 ? '' : cartItem.length}}</i>
+        <!-- <i class="num" v-if="cartItem.length!==0">{{cartItem.length === 0 ? '' : cartItem.length}}</i> -->
+        <i class="num" v-if="cartItem.length!==0">{{buyNum}}</i>
       </button>
       <button class="order-ope-top button" @click="gotoTop"><i class="el-icon-arrow-up"></i></button>
     </div>
@@ -65,7 +66,8 @@
         goodsItem: [],
         totalPrice: 0,
         userInfo: {},
-        isSurePay: false
+        isSurePay: false,
+        buyNum: 0
       }
     },
     methods: {
@@ -100,6 +102,7 @@
         if(this.isWaitGive('此订单已经提交，无法添加物品')){      
           return
         } 
+        console.log('value', value.buyNum);
         this.$set(value, 'buyNum', value.buyNum ? value.buyNum + 1 : 1);
         let hasCart = false, _cartItem = this.cartItem.map((item)=>{
           return item
@@ -241,10 +244,13 @@
         deep: true,
         immediate: true,
         handler(n){
-          let total = 0;
+          console.log('----');
+          let total = 0, buyNum = 0;
           n.forEach((e, index)=>{          
             total = total + (Number(e.price) * Number(e.buyNum));
+            buyNum = buyNum + e.buyNum;
           })
+          this.buyNum = buyNum;
           this.totalPrice = total;
         }
       }

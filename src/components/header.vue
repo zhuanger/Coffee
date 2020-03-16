@@ -39,7 +39,9 @@
       }
     },
     mounted(){
-      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      console.log('------');
+      // console.log(JSON.parse(localStorage.getItem('userInfo')).username)
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo')) || {username: ''};
     },
     computed: {
       activeIndex: {
