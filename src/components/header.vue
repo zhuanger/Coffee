@@ -16,6 +16,7 @@
   </header>
 </template>
 <script>
+  import { mapMutations} from 'vuex'
   export default {
     name: 'coffee-header',
     props: {
@@ -24,10 +25,14 @@
       }
     },
     methods: {
+    ...mapMutations(['SET_SEARCHCLICK']),
+
       handleSelect(key, keyPath){
         this.activeIndex = key; 
       },
       searchClick(){
+        console.log('----', this.search);
+        this.SET_SEARCHCLICK(this.search)
         this.$router.push({path: '/search', query: {keyword: this.search}})
       },    
     },
@@ -39,8 +44,6 @@
       }
     },
     mounted(){
-      console.log('------');
-      // console.log(JSON.parse(localStorage.getItem('userInfo')).username)
       this.userInfo = JSON.parse(localStorage.getItem('userInfo')) || {username: ''};
     },
     computed: {
@@ -64,6 +67,7 @@
           return this.$store.state.search;
         },
         set(n){
+          console.log('n', n);
           this.$store.commit('SET_SEARCH', n);
         }
       },
