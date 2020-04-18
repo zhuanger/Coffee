@@ -71,6 +71,11 @@
           this.$store.commit('SET_SEARCH', n);
         }
       },
+    },
+    watch: {
+      hasLogin(){
+        this.userInfo = JSON.parse(localStorage.getItem('userInfo')) || {username: ''};
+      }
     }
   }
 </script>
