@@ -29,7 +29,7 @@
     name: 'home',
     data(){
       return{
-        liItem:[{name: '个人中心', isActive: true}, {name: '我的订单', isActive: false}, 
+        liItem:[{name: '个人资料', isActive: true}, {name: '我的订单', isActive: false}, 
                 {name: '管理成员' ,isActive: false},{name: '管理商品', isActive: false},
                 {name: '收款二维码', isActive: false}],
         activeIndex: 0,

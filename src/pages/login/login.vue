@@ -3,11 +3,11 @@
     <div class="login-top">
       <div class="login-top-box">
         <img src="@A/images/logo.png" alt="" class="login-top-box-img">
-        <h3 class="login-top-box-h3">登陆</h3>
+        <h3 class="login-top-box-h3">登录</h3>
       </div>
     </div>
     <div class="login-container">
-      <h3>系统登陆</h3>
+      <h3>系统登录</h3>
       <div class="login-container-box">
         <el-input placeholder="您的员工账号" v-model="username" clearable class="login-container-input" maxlength="11"></el-input>
         <span for="">{{errUsernameText}}</span>

@@ -6,11 +6,11 @@
       <el-menu-item index="1" route="/index">首页</el-menu-item>
       <el-menu-item index="2" route="/about">关于我们</el-menu-item>
       <el-menu-item index="3" route="/activity">最新活动</el-menu-item>
-      <el-menu-item index="4" route="/order" v-if="hasLogin">员工点餐系统</el-menu-item>
+      <el-menu-item index="4" route="/order" v-if="hasLogin">点餐</el-menu-item>
       <el-input  class="header-search" placeholder="请输入搜索内容" prefix-icon="el-icon-search" v-model="search" v-on:keyup.enter.native="searchClick"></el-input>
       
       <el-menu-item index="5" class="el-menu-login" :route="hasLogin ? '/home' : '/login'"
-       >{{hasLogin ? `欢迎 ${userInfo.username}` : '登陆'}}</el-menu-item>
+       >{{hasLogin ? `欢迎 ${userInfo.username}` : '登录'}}</el-menu-item>
     </el-menu>
     <div class="line"></div>
   </header>
