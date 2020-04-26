@@ -16,6 +16,7 @@
 </template>
 <script>
 import good from "@C/good";
+import { mapState} from 'vuex'
 export default {
   components: {
     good
@@ -70,7 +71,6 @@ export default {
       })
     },
     addGood(value){
-      console.log(value);
       this.$set(value, 'buyNum', 1);
       this.$router.push({path: '/order', query: {item: JSON.stringify(value)}})
     },
@@ -86,10 +86,18 @@ export default {
     search(){
       console.log('this.$route.query.keyword ', this.$route.query.keyword );
       return this.$route.query.keyword || this.$store.state.search;
-    }
+    },
+    ...mapState({
+      searchClickParams: state => state.searchClickParams
+    })
   },
   mounted(){
     this.searchData(1);
+  },
+  watch: {
+    searchClickParams(n, o){
+      this.searchData(1);
+    }
   }
 }
 </script>

@@ -119,7 +119,7 @@
          
           self.$message({
             showClose: true,
-            message: '添加成功',
+            message: self.dialogType === 'create'?'添加成功' : '修改成功',
             type: 'success'
           });
         }).catch(()=>{

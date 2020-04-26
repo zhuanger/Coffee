@@ -7,6 +7,7 @@ const state = {
   balanceTitle: '去结算',
   qrImg: '',
   isBalance: false,
-  orderId: -1
+  orderId: -1,
+  searchClickParams: ''
 }
 export default state

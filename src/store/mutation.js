@@ -1,3 +1,5 @@
+import state from "./state";
+
 const mutations = {
   SET_LOGIN(state, payload){
     state.hasLogin = payload;
@@ -22,6 +24,9 @@ const mutations = {
   },
   SET_ORDERID(state, payload){
     state.orderId = payload;
+  },
+  SET_SEARCHCLICK(state, n){
+    state.searchClickParams = n;
   }
 }
 export default mutations
