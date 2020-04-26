@@ -2,10 +2,18 @@
   <section class="manage">
     <!-- 用户名/ 角色/ 设置权限 -->
     <el-button type="primary" class="manage-add" @click="dialogFormVisible = true">添加成员</el-button>
+    <el-dropdown class="import">
+      <el-button type="success" >导出数据<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item @click.native="importFunction(1)">导出本页数据</el-dropdown-item>
+        <el-dropdown-item @click.native="importFunction(2)">导出全部数据</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
+    <input  @change="importExcel($event)"  class="importE" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
     <el-table :data="tableData" stripe style="width: 100%" v-loading="isLoading">
       <el-table-column prop="username" label="用户名" width="200"></el-table-column>
       <el-table-column prop="role_id" label="角色" width="200"></el-table-column>
-      <el-table-column prop="address" label="操作" type="index" width="400">
+      <el-table-column  type="index" width="400" >
         <template slot-scope="scope">
           <el-button type="primary" @click="permission(scope.row, scope.$index)">权限设置</el-button>
           <el-button type="danger" @click="deleteUser(scope.row, scope.$index)">删除</el-button>
@@ -53,6 +61,7 @@
 </template>
 <script>
 import {trim} from "@A/js/util";
+import Xlsx from "xlsx"
 export default {
   data(){
     return{
@@ -233,6 +242,119 @@ export default {
     changePage(page){
       this.page = page;
       this.getData();
+    },
+    readWorkbookFromLocalFile(file, callback) {
+      let reader = new FileReader();
+      reader.onload = function(e) {
+        let data = e.target.result;
+        let workbook = Xlsx.read(data, {type: 'binary'});
+        if(callback) callback(workbook);
+      };
+      reader.readAsBinaryString(file);
+    },
+    importFunction(type){
+      // 1: 本页  2: 全部
+      let self = this, aoa = [['用户名', '角色']], title = '';
+      if(type === 1){
+        aoa = aoa.concat(this.tableData.map((item) => {
+          return [item.username, item.role_id]
+        }));
+        title = '本页成员.xlsx';
+        let sheet = Xlsx.utils.aoa_to_sheet(aoa);
+        self.openDownloadDialog(self.sheet2blob(sheet), title)
+      }else if(type === 2){
+        title = '全部成员.xlsx';
+        this.$ajax.post('/getAllUserToImport', {user_id: this.userInfo.id}).then((res) => {
+          aoa = aoa.concat(res.data.map((item) => {
+            if(item.role_id === 1){
+              item.role_id = '店员';
+            }else if(item.role_id === 2){
+              item.role_id = '老板';
+            }
+            return [item.username, item.role_id]
+          }))
+          let sheet = Xlsx.utils.aoa_to_sheet(aoa);
+          self.openDownloadDialog(self.sheet2blob(sheet), title)
+        })
+      }
+     
+    },
+    importExcel(e){
+      let self = this;
+      this.readWorkbookFromLocalFile(e.target.files[0], (res) => {
+        let worksheet = res.Sheets.sheet1, sendData = [];
+        let worksheetKeyLength = Object.keys(worksheet);
+        if(worksheetKeyLength.length < 5){
+          self.$message({
+            showClose: true,
+            message: '请选择正确的Excel表',
+            type: 'error'
+          });
+          return
+        }
+        for(var key in worksheet) {
+          let va = key[0] === '!' ? worksheet[key] : worksheet[key].v
+          if(key[0] === 'A'){
+            let numbers = key.slice(1, key.length);
+            let valueKey = 'B' + numbers;
+            sendData.push({username: va, role_id: worksheet[valueKey].v})
+          }
+        }
+
+        self.$ajax.post('/importUser', {list: JSON.stringify(sendData.slice(1, sendData.length))}).then((result) => {
+          if(result.data){
+            self.$message({
+              showClose: true,
+              message: '导入成功',
+              type: 'success'
+            });
+            self.getData(1);
+
+          }
+          e.target.value = "";
+        })
+      })
+    },
+    sheet2blob(sheet, sheetName) {
+      sheetName = sheetName || 'sheet1';
+      var workbook = {
+        SheetNames: [sheetName],
+        Sheets: {}
+      };
+      workbook.Sheets[sheetName] = sheet;
+      // 生成excel的配置项
+      var wopts = {
+        bookType: 'xlsx', // 要生成的文件类型
+        bookSST: false, // 是否生成Shared String Table，官方解释是，如果开启生成速度会下降，但在低版本IOS设备上有更好的兼容性
+        type: 'binary'
+      };
+      var wbout = Xlsx.write(workbook, wopts);
+      var blob = new Blob([s2ab(wbout)], {type:"application/octet-stream"});
+      // 字符串转ArrayBuffer
+      function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+      }
+      return blob;
+    },
+    openDownloadDialog(url, saveName){
+      if(typeof url == 'object' && url instanceof Blob)
+      {
+        url = URL.createObjectURL(url); // 创建blob地址
+      }
+      var aLink = document.createElement('a');
+      aLink.href = url;
+      aLink.download = saveName || ''; // HTML5新增的属性，指定保存文件名，可以不要后缀，注意，file:///模式下不会生效
+      var event;
+      if(window.MouseEvent) event = new MouseEvent('click');
+      else
+      {
+        event = document.createEvent('MouseEvents');
+        event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      }
+      aLink.dispatchEvent(event);
     }
   },
   mounted(){
@@ -253,5 +375,16 @@ export default {
     &-add{
       float: right;
     }
+  }
+  .import{
+    float: right;
+    margin-right: 10px;
+  }
+  .importE{
+    float: right;
+    width: 150px;
+    margin-right: 10px;
+    padding-top: 8px;
+    height: 40px;
   }
 </style>

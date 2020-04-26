@@ -2,7 +2,14 @@
   <section class="manageGoods">
     <!-- 商品 价格 上架时间 操作：删除。修改 -->
     <el-button type="primary" class="manage-add" @click="edit('1', '1', 'create')">添加商品</el-button>
-    <el-table :data="tableData" stripe style="width: 100%" @sort-change="sortBy">
+    <el-dropdown class="import">
+      <el-button type="success " >导出数据<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item @click.native="importFunction(1)">导出本页数据</el-dropdown-item>
+        <el-dropdown-item @click.native="importFunction(2)">导出全部数据</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
+    <el-table :data="tableData" stripe style="width: 100%" @sort-change="sortBy" :loading="loading">
       <el-table-column prop="product" label="名字" width="120"></el-table-column>
       <el-table-column prop="price" label="价格" width="140"></el-table-column>
       <el-table-column prop="add_date" label="上架时间" width="140"></el-table-column>
@@ -60,6 +67,7 @@
   </section>
 </template>
 <script>
+  import Xlsx from "xlsx"
   import imageAdd from '@C/imageAdd';
   import {trim} from "@A/js/util";
   export default {
@@ -83,7 +91,8 @@
         userInfo: {},
         typeItem: [],
         editIndex: -1,
-        title: ''
+        title: '',
+        loading: false
       } 
     },
     methods:{
@@ -182,13 +191,14 @@
         if(page){
           this.page = page;
         }
+        this.loading = true;
         this.$ajax.post('/allGoods', {
           page: this.page,
           sortBy: JSON.stringify(sortBy)
         }).then((res)=>{
           if(res.code === 200){
             res.data.pageinfo.forEach((e)=>{
-              e.add_date = e.add_date.split('T')[0]; 
+              e.add_date = e.add_date.split(' ')[0]; 
               e.goodType = this.typeItem[Number(e.good_types_id) - 1].type;
               if(e.image){
                 e.image = decodeURIComponent(window.atob(e.image));
@@ -196,6 +206,7 @@
             });
             self.tableData = res.data.pageinfo;
             self.total = res.data.pagenum;
+            self.loading = true;
           }
         }).catch(()=>{
           self.dialogFormVisible = false;
@@ -274,6 +285,69 @@
         let sortBy = row.order === "descending" ? 'DESC' : 'ASC';
         this.getData(1, [row.prop, sortBy]);
 
+      },
+      importFunction(type){
+        // 1: 本页  2: 全部
+        let self = this, aoa = [['名字', '价格', '上架时间', '商品分类', '库存', '销售量']], title = '';
+        if(type === 1){
+          aoa = aoa.concat(this.tableData.map((item) => {
+            return [item.product, item.price, item.add_date, item.goodType, item.stock, item.sell_num]
+          }));
+          title = '本页商品.xlsx';
+          let sheet = Xlsx.utils.aoa_to_sheet(aoa);
+          self.openDownloadDialog(self.sheet2blob(sheet), title)
+        }else if(type === 2){
+          title = '全部商品.xlsx';
+          this.$ajax.post('/getAllGoods', {user_id: this.userInfo.id}).then((res) => {
+            aoa = aoa.concat(this.tableData.map((item) => {
+              return [item.product, item.price, item.add_date, item.goodType, item.stock, item.sell_num]
+            }));
+            let sheet = Xlsx.utils.aoa_to_sheet(aoa);
+            self.openDownloadDialog(self.sheet2blob(sheet), title)
+          })
+        }
+      
+      },
+      sheet2blob(sheet, sheetName) {
+        sheetName = sheetName || 'sheet1';
+        var workbook = {
+          SheetNames: [sheetName],
+          Sheets: {}
+        };
+        workbook.Sheets[sheetName] = sheet;
+        // 生成excel的配置项
+        var wopts = {
+          bookType: 'xlsx', // 要生成的文件类型
+          bookSST: false, // 是否生成Shared String Table，官方解释是，如果开启生成速度会下降，但在低版本IOS设备上有更好的兼容性
+          type: 'binary'
+        };
+        var wbout = Xlsx.write(workbook, wopts);
+        var blob = new Blob([s2ab(wbout)], {type:"application/octet-stream"});
+        // 字符串转ArrayBuffer
+        function s2ab(s) {
+          var buf = new ArrayBuffer(s.length);
+          var view = new Uint8Array(buf);
+          for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+          return buf;
+        }
+        return blob;
+      },
+      openDownloadDialog(url, saveName){
+        if(typeof url == 'object' && url instanceof Blob)
+        {
+          url = URL.createObjectURL(url); // 创建blob地址
+        }
+        var aLink = document.createElement('a');
+        aLink.href = url;
+        aLink.download = saveName || ''; // HTML5新增的属性，指定保存文件名，可以不要后缀，注意，file:///模式下不会生效
+        var event;
+        if(window.MouseEvent) event = new MouseEvent('click');
+        else
+        {
+          event = document.createEvent('MouseEvents');
+          event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        }
+        aLink.dispatchEvent(event);
       }
     },
     mounted(){
@@ -312,5 +386,9 @@
   .manageGoods-avatar-btn{
     margin-left: 145px;
     margin-top: 60px !important;
+  }
+  .import{
+    float: right;
+    margin-right: 10px;
   }
 </style>

@@ -9,6 +9,7 @@ import Router from '@R/index'
 import Store from '@S/index'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+
 //挂载属性
 Vue.use(ElementUI);
 Vue.use(VueRouter); 
