@@ -1,6 +1,6 @@
 <template>
   <div class="activity">
-    <swiper :imageItem="imageItem" @click.native="gotoPage"></swiper>
+    <swiper :imageItem="imageItem" @click="gotoPage()"></swiper>
   </div>
 </template>
 <script>
@@ -8,14 +8,17 @@
   export default {
     data(){
       return{
-        imageItem: [require('../../assets/images/news_activity01.png')]
+        imageItem: [require('../../assets/images/news_activity01.png'), 
+          require('../../assets/images/news_activity01.png'), require('../../assets/images/news_activity01.png')
+          ,  require('../../assets/images/news_activity01.png')]
       }
     },
     components: {
       swiper
     },
     methods: {
-      gotoPage(){
+      gotoPage(index){
+        console.log(index)
         this.$router.push({path: '/page'})
       }
     }

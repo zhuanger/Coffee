@@ -1,5 +1,5 @@
 <template>
-  <el-carousel :interval="4000" :type="type" :height="height" class="swiper">
+  <el-carousel :interval="4000" :type="type" :height="height" class="swiper" @click.native="gotoxx" @change="changeIndex">
     <el-carousel-item v-for="(item,index) in imageItem" :key="index">
       <img :src="item" alt="" class="swiper-img" @click="gotoPage(index)">
     </el-carousel-item>
@@ -16,10 +16,28 @@
         default: window.innerHeight + 'px'
       }
     },
+    data(){
+      return{
+        indexs: 0
+      }
+    },
     methods: {
       gotoPage(index){
-        let name = ['/pageOne', '/pageTwo'];
-        this.$router.push({path: name[index]});
+        console.log(this.$route.path)
+        if(this.$route.path.includes('activity')){
+          let name = ['/page', '/pageTwos', '/pageThree', '/pageFour'];
+          this.$router.push({path: name[index]});
+        }else{
+          let name = ['/pageOne', '/pageTwo'];
+          this.$router.push({path: name[index]});
+        }
+        
+      },
+      gotoxx(){
+        this.$emit('click', this.index)
+      },
+      changeIndex(index){
+        this.indexs = index;
       }
     }
   }

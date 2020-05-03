@@ -1,28 +1,28 @@
 <template>
   <article class="article" id="mp-editor">
-    <p style="color: #E7788D; font-size: 32px; margin-top: 16px; text-align:center" class="colorPink">春日樱花季</p>
-    <p class="colorPink" style="font-size: 22px; color: black;margin-bottom: 26px;">——全新樱花系列上市</p>
-    <img src="../../assets/images/activity001.jpg" alt="" style="width: 100%">
+    <p style="color: #E7788D; font-size: 32px; margin-top: 16px; text-align:center;margin-bottom: 120px" 
+    class="colorPink">积分花优惠</p>
+    <!-- <p class="colorPink" style="font-size: 22px; color: black;margin-bottom: 26px;">——全新樱花系列上市</p>
+    <img src="../../assets/images/sss.jpg" alt="" style="width: 100%">
     
     <div style="display: flex; justify-content:center">
       <img src="../../assets/images/flower.jpg" alt="" style="width: 40px;height: 40px;">
       <p class="colorPink" style="font-size: 42px">01</p>
     </div>
-    <p class="colorPink" style="font-size: 32px;">珞咖樱花拿铁</p>
-    <div style="text-align:left; padding-left:10%; margin: 30px 0; line-height: 70px; font-size: 26px;">
-      <p>//</p>
-      <p>樱花风味与咖啡香气的美妙融于一杯</p>
-      <p>入口奶香涌动</p>
-      <p>余味花香悠长</p>
-      <p>春樱大福</p>
-      <p>日式景点甜品</p>
-      <p>细腻绵软的穿冲风味外皮</p>
+    <p class="colorPink" style="font-size: 32px;">料多多系列奶茶</p>
+    div
+    <div style="text-align:left; padding-left:10%; margin: 30px 0; line-height: 70px; font-size: 26px;"> -->
+      
+      <div style="text-align:center">
+        <p>在店购买满10杯咖啡或者饮料</p>
+      <p>即可兑换任意一杯咖啡或者饮料</p>
+      </div>
+      <!-- <p>细腻绵软的穿冲风味外皮</p>
       <p>填入自然清甜的樱花风味慕斯</p>
       <p>入口即化，甜而不腻</p>
-      <p>日式景点甜品</p>
-    </div>
+      <p>日式景点甜品</p> -->
     <el-divider></el-divider>
-     <div style="display: flex; justify-content:center;margin-top: 50px">
+     <!-- <div style="display: flex; justify-content:center;margin-top: 50px">
       <img src="../../assets/images/flower.jpg" alt="" style="width: 40px;height: 40px;">
       <p class="colorPink" style="font-size: 42px">02</p>
     </div>
@@ -33,7 +33,7 @@
       <p>表面裹上樱花风味粉巧克力酱</p>
       <p>内里注入甜草莓酱</p>
       <p>轻咬一口满是香甜滋味</p>
-    </div>
+    </div> -->
   </article>
 </template>
 <script>

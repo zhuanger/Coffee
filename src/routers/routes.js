@@ -5,6 +5,9 @@ import Detail from "@P/index/detail"
 import About from "@P/about/about"
 import Activity from "@P/activity/activity"
 import Page from "@P/activity/page"
+import PageTwos from "@P/activity/page2"
+import PageThree from "@P/activity/page3"
+import PageFour from "@P/activity/page4"
 import Login from "@P/login/login"
 import Order from "@P/order/order"
 import Home from "@P/home/home"
@@ -22,5 +25,8 @@ let route = [
   {path: '/page', component: Page, name: 'page'},
   {path: '/pageOne', component: PageOne, name: 'pageOne'},
   {path: '/pageTwo', component: PageTwo, name: 'PpageTwo'},
+  {path: '/pageTwos', component: PageTwos, name: 'PpageTwos'},
+  {path: '/pageThree', component: PageThree, name: 'PageThree'},
+  {path: '/pageFour', component: PageFour, name: 'PageFour'},
 ]
 export default route  
