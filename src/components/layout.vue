@@ -11,7 +11,7 @@
     <el-row :gutter="20"  type="flex" justify="left" v-if="imagesItem.length > 0">
       <el-col :span="6" @mouseover.native="addAndRemoveAvtive(index, 1)" @mouseleave.native="addAndRemoveAvtive(index, 2)" 
         :class=" isActiveItem[index] ? 'el-col-active' :''" v-for="(item,index) in 3" :key="index">
-        <div :class="['grid-content bg-purple', isActiveItem[index] ? 'bg-purple-active' :'']">
+        <div :class="['grid-content bg-purple width-auto', isActiveItem[index] ? 'bg-purple-active' :'']">
           <div :class="isIndex ? 'layoutWidth-320' : 'layoutWidth'">
             <img :src="imagesItem[item-1].image" alt="" class="el-col-img">
           </div>
@@ -25,8 +25,8 @@
     <el-row :gutter="20"  type="flex" justify="left" v-if="imagesItem.length > 2">
       <el-col :span="6" @mouseover.native="addAndRemoveAvtive(index+3, 1)" @mouseleave.native="addAndRemoveAvtive(index+3, 2)" 
         :class=" isActiveItem[index+3] ? 'el-col-active' :''" v-for="(item,index) in (imagesItem.length - 3)" :key="index" >
-        <div :class="['grid-content bg-purple', isActiveItem[index+3] ? 'bg-purple-active' :'']">
-          <div class="layoutWidth">
+        <div :class="['grid-content bg-purple width-auto', isActiveItem[index+3] ? 'bg-purple-active' :'']">
+          <div :class="isIndex ? 'layoutWidth-320' : 'layoutWidth'">
             <img :src="imagesItem[item+2].image" alt="" class="el-col-img">
           </div>
           <div style="padding-left: 40px; padding-top:5px;padding-bottom:10px">
@@ -148,7 +148,11 @@
     height: 250px !important; width: 100% !important;
   }
   .layoutWidth-320{
-    height: 320px !important; width: 100% !important;
+    height: 360px !important; 
+    width: 100% !important;
 
+  }
+  .width-auto{
+    width: 360px !important;
   }
 </style>
