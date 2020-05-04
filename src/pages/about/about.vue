@@ -14,29 +14,29 @@
         <div class="about-container-right">
           <div v-if="clickActive === 0">
             <h2 class="about-container-right-title">商业模式</h2>
-            <p class="about-container-right-text">luckin coffee（瑞幸咖啡）是中国新零售咖啡的典型代表，致力于成为中国领先的高品质咖啡品牌和专业化的咖啡服务提供商。</p>
-            <p class="about-container-right-text">luckin coffee 以优选的产品原料、精湛的咖啡工艺，创新的商业模式，领先的移动互联网技术，努力为广大消费者带来更高品质的咖啡消费新体验，推动咖啡文化在中国的普及和发展。</p>
-            <img src="@A/images/img01.png" alt="#" class="about-container-right-img">
+            <p class="about-container-right-text">Downstairs coffee（楼下咖啡）是一家自创的咖啡品牌商店，主要经营咖啡和轻餐，致力于成为品牌连锁店。</p>
+            <p class="about-container-right-text">Downstairs coffee 以优选的产品原料、精湛的咖啡工艺，创新的商业模式，努力为广大消费者带来更高品质的咖啡消费新体验，推动咖啡文化在中国的普及和发展。</p>
+            <img src="@A/images/img01.jpg" alt="#" class="about-container-right-img">
             <h2 class="about-container-right-title">
               品牌主张
             </h2>
-            <p class="about-container-right-text">luckin coffee相信一个崭新时代的源头永远始于改变，我们以高性价比改变咖啡消费观念，以规格原料与制程改变咖啡消费品质，以新零售模式改变咖啡消费体验</p>
-            <p class="about-container-right-text">luckin coffee面向职场和年轻一代消费者，鼓励他们充满自信，突破以往，勇于改变</p>
+            <p class="about-container-right-text">Downstairs coffee相信一个崭新时代的源头永远始于改变，我们以高性价比改变咖啡消费观念，以规格原料与制程改变咖啡消费品质，以新零售模式改变咖啡消费体验</p>
+            <p class="about-container-right-text">Downstairs coffee面向职场和年轻一代消费者，鼓励他们充满自信，突破以往，勇于改变</p>
           </div>
           <div class="" v-if="clickActive === 1">
             <h2 class="about-container-right-title">联系我们</h2>
-            <h4>进场合作：4000-100-100（热线） hz@luckincoffee.com（邮箱）</h4>
-            <p>为大型企业、中高端写字楼提供专业咖啡配套。欢迎各类咖啡厅转让</p>
-            <h4>品牌联合：co-branding@luckincoffee.com</h4>
-            <h4>媒体合作：pr@luckincoffee.com</h4>
-            <h4>媒介资源：bmd-ad@luckincoffee.com</h4>
-            <h4>采购招商：cg-zs@luckincoffee.com</h4>
-            <img src="@A/images/img02.png" alt="#" class="about-container-right-img">
+            <h4>进场合作：4000-100-100（热线） hz@Downstairs coffee.com（邮箱）</h4>
+            <p>为小型企业、写字楼提供专业咖啡和下午茶预定。</p>
+            <h4>品牌联合：co-branding@Downstairs coffee.com</h4>
+            <h4>媒体合作：pr@Downstairs coffee.com</h4>
+            <h4>媒介资源：bmd-ad@Downstairs coffee.com</h4>
+            <h4>采购招商：cg-zs@Downstairs coffee.com</h4>
+            <img src="@A/images/img03.jpg" alt="#" class="about-container-right-img">
           </div>
           <div v-if="clickActive === 2">
             <h2 class="about-container-right-title">加入我们</h2>
-            <p>luckin coffee不止于提供一杯高品质的新鲜咖啡，我们同时将互联网体验融入咖啡的消费流程，开创出全新的商业模式。加入我们，一起探索更多新鲜事。</p>
-            <img src="@A/images/img03.png" alt="#" class="about-container-right-img">
+            <p>Downstairs coffee不止于提供一杯高品质的新鲜咖啡，我们同时将带动新一代人积极向上，开创出全新的商业模式。加入我们，一起探索更多新鲜事。</p>
+            <img src="@A/images/img02.jpg" alt="#" class="about-container-right-img">
           </div>
         </div>
       </div>
