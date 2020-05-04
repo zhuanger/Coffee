@@ -194,9 +194,9 @@
         this.$ajax.post('/updatepaystatus', {order_id: this.orderId}).then((res)=>{
           if(res.code === 200){
             self.$store.commit('SET_ORDERID', res.data.id);
-            self.$store.commit('SET_BALANCESTATUS', 1);
-            self.$store.commit('SET_BALANCETITLE', '去结算');
-            self.$store.commit('SET_CARTITEM', []);
+            self.$store.commit('SET_BALANCESTATUS', 1);//改变前端订单状态
+            self.$store.commit('SET_BALANCETITLE', '去结算');//改变状态：去结算——待付款
+            self.$store.commit('SET_CARTITEM', []);//清空购物车
             self.drawer = false;
             self.$message({
               showClose: true,
@@ -204,7 +204,7 @@
               type: 'success'
             });
             self.isSurePay = false;
-            window.location.reload();
+            window.location.reload();//刷新页面
             // self.$store.commit('SET_QRIMG', decodeURIComponent(window.atob(res.data.balanceImage)));
             // self.$store.commit('SET_ISBALANCE', false);
           }

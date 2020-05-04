@@ -1,5 +1,5 @@
-const state = {
-  hasLogin: localStorage.getItem('userInfo') ? true : false,
+const state = {//所有页面的变量
+  hasLogin: localStorage.getItem('userInfo') ? true : false,//判断登陆状态
   search: '', //搜索内容
 
   cartItem: [], //购物车

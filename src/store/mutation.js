@@ -1,6 +1,6 @@
 import state from "./state";
 
-const mutations = {
+const mutations = {//所有页面的方法
   SET_LOGIN(state, payload){
     state.hasLogin = payload;
   },

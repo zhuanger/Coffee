@@ -74,6 +74,7 @@
     },
     watch: {
       hasLogin(){
+        console.log('-----,login')
         this.userInfo = JSON.parse(localStorage.getItem('userInfo')) || {username: ''};
       }
     }

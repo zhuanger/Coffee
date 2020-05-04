@@ -23,7 +23,6 @@
     },
     methods: {
       gotoPage(index){
-        console.log(this.$route.path)
         if(this.$route.path.includes('activity')){
           let name = ['/page', '/pageTwos', '/pageThree', '/pageFour'];
           this.$router.push({path: name[index]});

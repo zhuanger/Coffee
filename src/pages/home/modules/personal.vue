@@ -127,7 +127,8 @@ export default {
         });
       })
     },
-    logout(){
+    logout(){//退出登录
+      this.$store.commit('SET_LOGIN', false);
       localStorage.removeItem('userInfo');
       this.$router.push({path: 'login'});
     }

@@ -49,21 +49,21 @@
           }, 1500);
           return;
         }
-        this.fullscreenLoading = true;
-        this.$ajax.post('/login', {
+        this.fullscreenLoading = true;//防止多次点击登陆按钮来请求接口数据
+        this.$ajax.post('/login', {//请求接口
           username: this.username,
           password: this.password
-        }).then((res)=>{
-          if(res.code === 200){
+        }).then((res)=>{//请求成功
+          if(res.code === 200){//账号和密码一致返回200
             let userInfo = {
               role_id: res.data.role_id,
               username: self.username,
               password: self.password,
               avatar: decodeURIComponent(window.atob(res.data.avatar)),
-              id: res.data.id
+              id: res.data.id//数据库索引ID
             }
-            localStorage.setItem('userInfo', JSON.stringify(userInfo));
-            self.$store.commit('SET_LOGIN', true);
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));//存储于浏览器
+            self.$store.commit('SET_LOGIN', true);//vue插件store存储全局变量
             setTimeout(() => {
               self.fullscreenLoading = false;
               self.$router.push({name: 'home'});
@@ -71,14 +71,14 @@
           }else{
             // 提示错误
             if(res.code === 202){
-              self.errPasswordText = res.msg;
+              self.errPasswordText = res.msg;//密码错误
             }else{
-              self.errUsernameText = res.msg;
+              self.errUsernameText = res.msg;//账号错误
             }     
             self.fullscreenLoading = false;
             setTimeout(() => {
               self.hideErrText(res.code === 201 ? 'username':'password');
-            }, 1500);
+            }, 1500);//隐藏提示
           }
         }).catch((e)=>{
           // 错误处理

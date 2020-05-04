@@ -4,6 +4,7 @@
     <div class="good-text">
       <span class="money">￥{{item.price}}元</span>
       <p class="good-text-title">{{item.product}}</p>
+      <p style="margin-top: 5px" class="ellipsis">成分：{{item.component}}</p>
       <div class="good-text-content">
         <span class="stock">库存：{{item.stock}}</span>
         <i class="cart" @click="addGood"></i>
@@ -31,8 +32,8 @@ export default {
 <style lang="scss" scoped>
   .good{
     float: left;
-    height: 310px;
-    width: 220px;
+    height: 400px;
+    width: 255px;
     border: 1px solid gray;
     box-shadow: 0 0px 0px 0x rgba(0, 0, 0, 0.12);
     margin: 0 20px 20px 0;
@@ -82,5 +83,17 @@ export default {
         }
       }
     }
+  }
+  .ellipsis{
+    display: -webkit-box; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    word-wrap: break-word; 
+    word-break: break-all; 
+    white-space: normal !important; 
+    -webkit-box-orient: vertical; 
+    -webkit-line-clamp: 1; 
+    color: #aaaaaa;
+    font-size: 12px;
   }
 </style>

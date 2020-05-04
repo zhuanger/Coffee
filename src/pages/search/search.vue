@@ -1,11 +1,11 @@
 <template>
   <section class="search">
+    <!-- 返回搜索结果页 -->
     <div class="search-container">
       <good class="good" v-for="(item, index) in goodsItem" :key="index" :item="item" @addGood="addGood"></good>
+      <!-- v-for循环遍历搜索 -->
       <div class="clear"></div>
     </div>
-    
-    
     <div class="no-result" v-if="goodsItem.length===0">
       <p>没有找到此类型商品</p>
     </div>

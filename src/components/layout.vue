@@ -8,7 +8,7 @@
         </svg>
       </a>
     </div>
-    <el-row :gutter="20"  type="flex" justify="left" v-if="imagesItem.length > 0">
+    <el-row :gutter="20"  type="flex" justify="center" v-if="imagesItem.length > 0">
       <el-col :span="6" @mouseover.native="addAndRemoveAvtive(index, 1)" @mouseleave.native="addAndRemoveAvtive(index, 2)" 
         :class=" isActiveItem[index] ? 'el-col-active' :''" v-for="(item,index) in 3" :key="index">
         <div :class="['grid-content bg-purple width-auto', isActiveItem[index] ? 'bg-purple-active' :'']">
@@ -22,7 +22,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-row :gutter="20"  type="flex" justify="left" v-if="imagesItem.length > 2">
+    <el-row :gutter="20"  type="flex" justify="center" v-if="imagesItem.length > 2">
       <el-col :span="6" @mouseover.native="addAndRemoveAvtive(index+3, 1)" @mouseleave.native="addAndRemoveAvtive(index+3, 2)" 
         :class=" isActiveItem[index+3] ? 'el-col-active' :''" v-for="(item,index) in (imagesItem.length - 3)" :key="index" >
         <div :class="['grid-content bg-purple width-auto', isActiveItem[index+3] ? 'bg-purple-active' :'']">
@@ -106,7 +106,7 @@
     position: relative;
     bottom: 0px;
     border-radius: 4px;
-    margin-left: 7%;
+    // margin-left: 4%;
     &-active{
       bottom: 5px;
       transition: bottom .15s;

@@ -109,7 +109,7 @@ export default {
       }
       let self = this;
       this.btnLoading = true;
-      this.$ajax.post('/addUser',this.form).then((res)=>{
+      this.$ajax.post('/addUser',this.form).then((res)=>{//调用addUser接口添加成员
         // if(res.code === 200){
           self.btnLoading = false;
           self.tableData.unshift({
@@ -256,7 +256,7 @@ export default {
       // 1: 本页  2: 全部
       let self = this, aoa = [['用户名', '角色']], title = '';
       if(type === 1){
-        aoa = aoa.concat(this.tableData.map((item) => {
+        aoa = aoa.concat(this.tableData.map((item) => {//concat用于拼接数据
           return [item.username, item.role_id]
         }));
         title = '本页成员.xlsx';
@@ -264,7 +264,7 @@ export default {
         self.openDownloadDialog(self.sheet2blob(sheet), title)
       }else if(type === 2){
         title = '全部成员.xlsx';
-        this.$ajax.post('/getAllUserToImport', {user_id: this.userInfo.id}).then((res) => {
+        this.$ajax.post('/getAllUserToImport', {user_id: this.userInfo.id}).then((res) => {//访问getAllUserToImport接口取得全部数据
           aoa = aoa.concat(res.data.map((item) => {
             if(item.role_id === 1){
               item.role_id = '店员';
@@ -339,6 +339,7 @@ export default {
       }
       return blob;
     },
+    // 通过a标签来下载xlsx文件
     openDownloadDialog(url, saveName){
       if(typeof url == 'object' && url instanceof Blob)
       {
