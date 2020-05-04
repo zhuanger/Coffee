@@ -9,7 +9,7 @@
         <el-dropdown-item @click.native="importFunction(2)">导出全部数据</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <input  @change="importExcel($event)"  class="importE" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+    <!-- <input  @change="importExcel($event)"  class="importE" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/> -->
     <el-table :data="tableData" stripe style="width: 100%" v-loading="isLoading">
       <el-table-column prop="username" label="用户名" width="200"></el-table-column>
       <el-table-column prop="role_id" label="角色" width="200"></el-table-column>

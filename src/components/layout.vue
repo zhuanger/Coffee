@@ -12,7 +12,7 @@
       <el-col :span="6" @mouseover.native="addAndRemoveAvtive(index, 1)" @mouseleave.native="addAndRemoveAvtive(index, 2)" 
         :class=" isActiveItem[index] ? 'el-col-active' :''" v-for="(item,index) in 3" :key="index">
         <div :class="['grid-content bg-purple', isActiveItem[index] ? 'bg-purple-active' :'']">
-          <div style="height: 250px; width: 100%">
+          <div :class="isIndex ? 'layoutWidth-320' : 'layoutWidth'">
             <img :src="imagesItem[item-1].image" alt="" class="el-col-img">
           </div>
           <div style="padding-left: 40px; padding-top:5px;padding-bottom:10px">
@@ -26,7 +26,7 @@
       <el-col :span="6" @mouseover.native="addAndRemoveAvtive(index+3, 1)" @mouseleave.native="addAndRemoveAvtive(index+3, 2)" 
         :class=" isActiveItem[index+3] ? 'el-col-active' :''" v-for="(item,index) in (imagesItem.length - 3)" :key="index" >
         <div :class="['grid-content bg-purple', isActiveItem[index+3] ? 'bg-purple-active' :'']">
-          <div style="height: 250px; width: 100%">
+          <div class="layoutWidth">
             <img :src="imagesItem[item+2].image" alt="" class="el-col-img">
           </div>
           <div style="padding-left: 40px; padding-top:5px;padding-bottom:10px">
@@ -50,7 +50,8 @@
     },
     data(){
       return{
-        isActiveItem: [false, false, false, false, false, false]
+        isActiveItem: [false, false, false, false, false, false],
+        isIndex: false
       }
     },
     methods:{
@@ -62,6 +63,7 @@
       }
     },
     mounted(){
+      this.isIndex = this.$route.path.includes('index') ? true : false;
     }
   }
 </script>
@@ -141,5 +143,12 @@
   .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
+  }
+  .layoutWidth{
+    height: 250px !important; width: 100% !important;
+  }
+  .layoutWidth-320{
+    height: 320px !important; width: 100% !important;
+
   }
 </style>

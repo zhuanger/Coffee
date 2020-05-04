@@ -47,7 +47,7 @@
         swiperHeight: '', // 第一个banner的高度
         hotItem: [],
         newItem: [],
-        imageItem: [require('../../assets/images/testImage-1.jpg'),require('../../assets/images/testImage-2.jpg'),require('../../assets/images/testImage-1.jpg')],
+        imageItem: [require('../../assets/images/testImage-1.jpg'),require('../../assets/images/testImage-2.jpg')],
         layoutItem: [require('../../assets/images/testImage.jpg'),require('../../assets/images/testImage.jpg'),require('../../assets/images/testImage.jpg')]
       }
     },
