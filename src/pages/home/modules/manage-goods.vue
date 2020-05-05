@@ -9,6 +9,9 @@
         <el-dropdown-item @click.native="importFunction(2)">导出全部数据</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
+    <el-button type="primary" class="import" style="margin-right: 10px" @click="census">统计全部商品</el-button>
+  
+
     <el-table :data="tableData" stripe style="width: 100%" @sort-change="sortBy" :loading="loading">
       <el-table-column prop="product" label="名字" width="120"></el-table-column>
       <el-table-column prop="price" label="价格" width="140"></el-table-column>
@@ -64,12 +67,20 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="商品统计" :visible.sync="censusVisible" width="80%" v-if="censusVisible" top="3vh">
+      <div class="census" id="census">
+        <div class="echart-census" >
+
+        </div>
+      </div>
+    </el-dialog>
   </section>
 </template>
 <script>
   import Xlsx from "xlsx"
   import imageAdd from '@C/imageAdd';
   import {trim} from "@A/js/util";
+  import echarts from 'echarts'
   export default {
     data(){
       return{
@@ -92,7 +103,9 @@
         typeItem: [],
         editIndex: -1,
         title: '',
-        loading: false
+        loading: false,
+        censusVisible: false,
+        myChart: undefined
       } 
     },
     methods:{
@@ -299,7 +312,7 @@
         }else if(type === 2){
           title = '全部商品.xlsx';
           this.$ajax.post('/getAllGoods', {user_id: this.userInfo.id}).then((res) => {
-            aoa = aoa.concat(this.tableData.map((item) => {
+            aoa = aoa.concat(res.data.map((item) => {
               return [item.product, item.price, item.add_date, item.goodType, item.stock, item.sell_num]
             }));
             let sheet = Xlsx.utils.aoa_to_sheet(aoa);
@@ -348,6 +361,63 @@
           event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
         }
         aLink.dispatchEvent(event);
+      },
+      census(){
+        // censusVisible
+        let self = this;
+        this.$ajax.post('/getAllGoods', {user_id: this.userInfo.id}).then((res) => {
+          console.log(res.data)
+          self.initChart(res.data);
+          // aoa = aoa.concat(this.tableData.map((item) => {
+          //   return [item.product, item.price, item.add_date, item.goodType, item.stock, item.sell_num]
+          // }));
+          // let sheet = Xlsx.utils.aoa_to_sheet(aoa);
+          // self.openDownloadDialog(self.sheet2blob(sheet), title)
+        })
+      },
+      initChart(data){
+        let self = this;
+        let dateArray=[], scoreArray=[], sell_numArray = [];
+        this.censusVisible = true;
+        this.$nextTick(() => {
+          self.myChart = echarts.init(document.querySelector('.echart-census'));
+          // 绘制图表
+          let length = data.length < 10 ? data.length : 10;
+          for(let i=0;i<length;i++){
+            dateArray.push(data[i].product);
+            scoreArray.push(data[i].stock);
+            sell_numArray.push(data[i].sell_num);
+          }
+          self.myChart.setOption({
+            legend: {
+              data:  ['库存', '销售量']
+            }, 
+            title: {
+              text: '商品统计'
+            },
+            xAxis: {
+              name: '商品名字',
+              data: dateArray,
+              type: 'category',
+            },
+            yAxis: {
+              name: '数量',
+              type: 'value'
+            },
+            series: [
+            {
+              type: 'bar',
+              data: scoreArray,  
+              name: '库存' ,
+              label: {show: true}
+            },{
+              type: 'bar',
+              data: sell_numArray,   
+              name: '销售量' ,
+              label: {show: true}
+            }]
+          });
+        })
       }
     },
     mounted(){
@@ -390,5 +460,9 @@
   .import{
     float: right;
     margin-right: 10px;
+  }
+  .echart-census{
+    width: 100%;
+    height: 520px;
   }
 </style>
