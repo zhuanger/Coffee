@@ -186,21 +186,21 @@
         }
         return true
       },
-      getData(page, sortBy = ['id', 'DESC']){
+      getData(page, sortBy = ['id', 'DESC']){//默认按照'id'、 'DESC'索引降序排序
         let self = this; 
-        if(page){
+        if(page){//判断page变量是否undefined
           this.page = page;
         }
         this.loading = true;
-        this.$ajax.post('/allGoods', {
+        this.$ajax.post('/allGoods', {//请求接口，获取商品数据
           page: this.page,
           sortBy: JSON.stringify(sortBy)
         }).then((res)=>{
-          if(res.code === 200){
+          if(res.code === 200){//获取成功
             res.data.pageinfo.forEach((e)=>{
-              e.add_date = e.add_date.split(' ')[0]; 
-              e.goodType = this.typeItem[Number(e.good_types_id) - 1].type;
-              if(e.image){
+              e.add_date = e.add_date.split(' ')[0]; //将时间截取
+              e.goodType = this.typeItem[Number(e.good_types_id) - 1].type;//商品分类文字显示
+              if(e.image){//图片转码
                 e.image = decodeURIComponent(window.atob(e.image));
               }
             });

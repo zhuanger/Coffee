@@ -146,7 +146,7 @@ export default {
             if(e.role_id === 1){
               e.role_id = '店员';
             }else if(e.role_id === 2){
-              e.role_id = '老板';
+              e.role_id = '店长';
             }
             if(e.avatar){
               e.avatar = decodeURIComponent(window.atob(e.avatar));
@@ -269,7 +269,7 @@ export default {
             if(item.role_id === 1){
               item.role_id = '店员';
             }else if(item.role_id === 2){
-              item.role_id = '老板';
+              item.role_id = '店长';
             }
             return [item.username, item.role_id]
           }))
