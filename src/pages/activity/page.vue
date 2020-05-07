@@ -1,7 +1,7 @@
 <template>
   <article class="article" id="mp-editor">
     <p style="color: #E7788D; font-size: 32px; margin-top: 16px; text-align:center" class="colorPink">春日樱花季</p>
-    <p class="colorPink" style="font-size: 22px; color: black;margin-bottom: 26px;">——全新樱花系列上市</p>
+    <p class="colorPink" style="font-size: 22px; color: #E7788D;margin-bottom: 26px;">——全新樱花系列上市，买拿铁送甜点！！</p>
     <img src="../../assets/images/activity001.jpg" alt="" style="width: 100%">
     
     <div style="display: flex; justify-content:center">
