@@ -10,7 +10,9 @@
       </el-dropdown-menu>
     </el-dropdown>
     <el-button type="primary" class="import" style="margin-right: 10px" @click="census">统计全部商品</el-button>
-  
+    <el-date-picker  class="import"  style="width: 300px" v-model="value1" type="daterange" range-separator="-" start-placeholder="开始日期"
+      end-placeholder="结束日期" value-format="yyyy-MM-dd">
+    </el-date-picker>
 
     <el-table :data="tableData" stripe style="width: 100%" @sort-change="sortBy" :loading="loading">
       <el-table-column prop="product" label="名字" width="120"></el-table-column>
@@ -105,7 +107,8 @@
         title: '',
         loading: false,
         censusVisible: false,
-        myChart: undefined
+        myChart: undefined,
+        value1: ''
       } 
     },
     methods:{
@@ -365,8 +368,7 @@
       census(){
         // censusVisible
         let self = this;
-        this.$ajax.post('/getAllGoods', {user_id: this.userInfo.id}).then((res) => {
-          console.log(res.data)
+        this.$ajax.post('/getAllGoods', {user_id: this.userInfo.id, startDate: this.value1 ? this.value1[0] : '', endDate: this.value1 ? this.value1[1] : ''}).then((res) => {
           self.initChart(res.data);
           // aoa = aoa.concat(this.tableData.map((item) => {
           //   return [item.product, item.price, item.add_date, item.goodType, item.stock, item.sell_num]
@@ -432,6 +434,9 @@
         if(!n){
           this.form = this.$options.data().form;
         }
+      },
+      value1(n){
+        console.log('n', n);
       }
     }
   }
