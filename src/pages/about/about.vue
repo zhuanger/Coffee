@@ -74,7 +74,7 @@
   .about{
     width: 100%;
     &-img{
-      max-width: 100%;
+      width: 100%;
       max-height: 340px;
     }
     &-contanier{
